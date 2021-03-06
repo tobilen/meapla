@@ -2,8 +2,7 @@ module.exports = {
   testRunner: "jest-circus/runner",
   roots: ["<rootDir>"],
   moduleFileExtensions: ["ts", "tsx", "js", "json", "jsx"],
-  testPathIgnorePatterns: ["<rootDir>[/\\\\](node_modules|.next)[/\\\\]"],
-  transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$"],
+  testPathIgnorePatterns: ["/.next/"],
   transform: {
     "^.+\\.(ts|tsx)$": "babel-jest",
   },
