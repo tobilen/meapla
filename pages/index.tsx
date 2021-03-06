@@ -1,5 +1,6 @@
 import * as React from "react";
 import Head from "next/head";
+import 'normalize.css';
 import styles from "../styles/Home.module.css";
 import { App } from "../components/App";
 
