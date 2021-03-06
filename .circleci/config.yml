@@ -1,0 +1,66 @@
+version: 2.1
+defaults: &defaults
+  working_directory: ~/meapla
+  docker:
+    - image: cimg/node:15.11
+
+jobs:
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: yarn install --immutable --immutable-cache
+      - run:
+          name: eslint
+          command: yarn eslint --format junit --output-file reports/eslint/test-results.xml
+      - run:
+          name: stylelint
+          command: |
+            mkdir -p reports/stylelint
+            yarn stylelint -s -- --custom-formatter 'node_modules/stylelint-junit-formatter' > reports/stylelint/test-results.xml
+      - store_test_results:
+          path: reports
+  typecheck:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: yarn install --immutable --immutable-cache
+      - run: # run typescript
+          name: typescript
+          command: yarn tsc
+  test:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - checkout
+      - run: yarn install --immutable --immutable-cache
+      - run:
+          name: Run Jest tests using test splitting
+          command: |
+            mkdir -p ./test-results/junit
+            TESTFILES=$(circleci tests glob "./**/*.test.{ts,js,tsx,jsx}" | circleci tests split --split-by=timings)
+            yarn jest --ci --bail --testResultsProcessor=jest-junit --runInBand ${TESTFILES}
+      - store_artifacts:
+          path: test-results/junit
+      - store_test_results:
+          path: test-results/junit
+  build-storybook:
+    <<: *defaults
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "fa:0b:63:dc:ed:4a:26:df:ca:dc:bf:cf:84:f3:49:8b"
+      - checkout
+      - run: yarn install --immutable --immutable-cache
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: yarn deploy-storybook --ci
+
+workflows:
+  version: 2
+  circle-ci-pipeline:
+    jobs:
+      - lint
+      - typecheck
+      - test
+      - build-storybook
