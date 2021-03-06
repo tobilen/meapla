@@ -1,22 +1,18 @@
 const defaultConfig = {
-  presets: [
-    'next/babel',
-  ],
+  presets: ["next/babel"],
   plugins: [],
 };
 
 module.exports = ({ env }) => {
-  if (env('test')) {
+  if (env("test")) {
     return {
       ...defaultConfig,
-      presets: [
-        ...defaultConfig.presets,
-      ],
+      presets: [...defaultConfig.presets],
       plugins: [
         ...defaultConfig.plugins,
         [
-          'babel-plugin-styled-components',
-          { ssr: false, displayName: false, namespace: 'sc' },
+          "babel-plugin-styled-components",
+          { ssr: false, displayName: false, namespace: "sc" },
         ],
       ],
     };
@@ -24,13 +20,11 @@ module.exports = ({ env }) => {
 
   return {
     ...defaultConfig,
-    presets: [
-      ...defaultConfig.presets,
-    ],
+    presets: [...defaultConfig.presets],
     plugins: [
       ...defaultConfig.plugins,
-      ['babel-plugin-styled-components', { ssr: true, namespace: 'sc' }],
-     'babel-plugin-jsx-remove-data-test-id',
+      ["babel-plugin-styled-components", { ssr: true, namespace: "sc" }],
+      "babel-plugin-jsx-remove-data-test-id",
     ],
   };
 };
