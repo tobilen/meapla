@@ -1,6 +1,27 @@
 import * as React from 'react';
+import styled from "styled-components";
 import Head from 'next/head'
+
+
 import styles from '../styles/Home.module.css'
+
+const Title = styled.div`
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  text-align: center;
+`
+
+const TitleLink = styled.a`
+    color: #0070f3;
+    text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline;
+  }
+`
 
 const Home: React.FC = () =>
   (
@@ -11,9 +32,9 @@ const Home: React.FC = () =>
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <Title>
+          Welcome to <TitleLink href="https://nextjs.org">Next.js!</TitleLink>
+        </Title>
 
         <p className={styles.description}>
           Get started by editing{' '}
