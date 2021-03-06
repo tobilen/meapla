@@ -1,7 +1,6 @@
 import * as React from "react";
-import styled from "styled-components";
 import Head from "next/head";
-
+import styled from "styled-components";
 import styles from "../styles/Home.module.css";
 
 const Title = styled.div`

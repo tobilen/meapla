@@ -1,0 +1,7 @@
+**/.next/*
+**/out/*
+**/node_modules/*
+storybook/
+
+# Hidden folders are ignored by default but we want to include the .storybook folder
+!.storybook/
