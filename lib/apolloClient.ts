@@ -9,7 +9,7 @@ const createApolloClient = () =>
   new ApolloClient({
     ssrMode: typeof window === "undefined", // set to true for SSR
     link: new HttpLink({
-      uri: "https://shy-sun.eu-central-1.aws.cloud.dgraph.io/graphql",
+      uri: "https://meapla.eu-central-1.aws.cloud.dgraph.io/graphql",
     }),
     cache: new InMemoryCache(),
   });
