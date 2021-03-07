@@ -49,7 +49,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "fa:0b:63:dc:ed:4a:26:df:ca:dc:bf:cf:84:f3:49:8b"
+            - "63:bd:56:66:84:f4:c9:24:58:0c:cc:5d:6f:0e:3f:5a"
       - checkout
       - run: yarn install --immutable --immutable-cache
       - run:
