@@ -1,1 +1,1 @@
-export * from "stylelint-junit-formatter";
+module.exports = require("stylelint-junit-formatter");
