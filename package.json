@@ -89,5 +89,10 @@
     "classNameTemplate": "{classname}.{title}",
     "outputDirectory": "./test-results/junit",
     "outputName": "results.xml"
+  },
+  "storybook-deployer": {
+    "gitUsername": "GH Pages Bot",
+    "gitEmail": "hello@ghbot.com",
+    "commitMessage": "Deploy Storybook to GitHub Pages [skip ci]"
   }
 }
