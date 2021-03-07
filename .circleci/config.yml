@@ -17,7 +17,7 @@ jobs:
           name: stylelint
           command: |
             mkdir -p reports/stylelint
-            yarn stylelint -s -- --custom-formatter 'setup/stylelint-junit-formatter' > reports/stylelint/test-results.xml
+            yarn stylelint --custom-formatter 'setup/stylelint-junit-formatter' > reports/stylelint/test-results.xml
       - store_test_results:
           path: reports
   typecheck:

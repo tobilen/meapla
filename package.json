@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "eslint": "eslint . --ext ts --ext tsx --ext js",
-    "stylelint": "stylelint \"./**/*.(ts|tsx)\"",
+    "stylelint": "stylelint --config ./stylelint.config.js \"./**/*.(ts|tsx)\"",
     "lint": "yarn eslint",
     "format": "prettier --write \"**/*.{js,ts,tsx}\" --ignore-path .gitignore",
     "storybook": "start-storybook -p 6006",
