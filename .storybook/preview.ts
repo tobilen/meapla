@@ -1,7 +1,8 @@
 import { StyleDecorator } from "./StyleDecorator";
 import { ApolloDecorator } from "./ApolloDecorator";
+import { GrommetDecorator } from "./GrommetDecorator";
 
-export const decorators = [StyleDecorator, ApolloDecorator];
+export const decorators = [StyleDecorator, ApolloDecorator, GrommetDecorator];
 
 export const parameters = {
   backgrounds: {
