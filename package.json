@@ -17,6 +17,10 @@
     "deploy-storybook": "storybook-to-ghpages"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.11",
+    "graphql": "^15.5.0",
+    "grommet": "^2.16.3",
+    "grommet-icons": "^4.5.0",
     "next": "10.0.8",
     "normalize.css": "^8.0.1",
     "react": "17.0.1",

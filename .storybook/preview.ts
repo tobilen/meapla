@@ -1,10 +1,11 @@
 import { StyleDecorator } from "./StyleDecorator";
+import { ApolloDecorator } from "./ApolloDecorator";
 
-export const decorators = [StyleDecorator];
+export const decorators = [StyleDecorator, ApolloDecorator];
 
 export const parameters = {
   backgrounds: {
-    default: "injixo",
+    default: "white",
     values: [
       { name: "white", value: "#fff" },
       { name: "dark", value: "#000" },
