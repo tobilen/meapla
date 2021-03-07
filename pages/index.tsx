@@ -3,8 +3,8 @@ import Head from "next/head";
 import { GetStaticProps } from "next";
 import "normalize.css";
 import styles from "../styles/Home.module.css";
-import { App } from "../components/App";
 import { ApolloClientState, initializeApollo } from "../lib/apolloClient";
+import { RecipeForm } from "../components/RecipeForm";
 
 export const getStaticProps: GetStaticProps<{
   initialApolloState: ApolloClientState;
@@ -22,22 +22,11 @@ export const getStaticProps: GetStaticProps<{
 const Home: React.FC = () => (
   <div className={styles.container}>
     <Head>
-      <title>Create Next App</title>
+      <title>meapla</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <App />
-
-    <footer className={styles.footer}>
-      <a
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by{" "}
-        <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-      </a>
-    </footer>
+    <RecipeForm />
   </div>
 );
 

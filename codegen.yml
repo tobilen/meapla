@@ -10,7 +10,7 @@ generates:
     config:
       avoidOptionals:
         field: true
-        inputValue: true
+        inputValue: false
         object: true
         defaultValue: true
 hooks:
