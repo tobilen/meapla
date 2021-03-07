@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
-type State = Record<string, unknown>;
+export type ApolloClientState = Record<string, unknown>;
 
-let apolloClientSingleton: ApolloClient<State>;
+let apolloClientSingleton: ApolloClient<ApolloClientState>;
 
 const createApolloClient = () =>
   new ApolloClient({
@@ -15,8 +15,8 @@ const createApolloClient = () =>
   });
 
 export const initializeApollo = (
-  initialState: State | null = null
-): ApolloClient<State> => {
+  initialState: ApolloClientState | null = null
+): ApolloClient<ApolloClientState> => {
   const apolloClient = apolloClientSingleton ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client,
@@ -38,5 +38,7 @@ export const initializeApollo = (
   return apolloClient;
 };
 
-export const useApollo = (initialState: State): ApolloClient<State> =>
+export const useApollo = (
+  initialState: ApolloClientState
+): ApolloClient<ApolloClientState> =>
   useMemo(() => initializeApollo(initialState), [initialState]);
