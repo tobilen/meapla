@@ -11,110 +11,21 @@ import {
   TextArea,
   TextInput,
 } from "grommet";
-import { useMutation } from "@apollo/client";
 import { Spacer } from "../styles";
-import {
-  Ingredient,
-  Measurement,
-  MutationAddIngredientArgs,
-  MutationDeleteIngredientArgs,
-  MutationUpdateIngredientArgs,
-} from "../../typings/graphql";
-import { IngredientForm } from "./IngredientForm";
-import {
-  ADD_INGREDIENT_MUTATION,
-  DELETE_INGREDIENT_MUTATION,
-  UPDATE_INGREDIENT_MUTATION,
-} from "./queries";
+import { IngredientForm } from "../IngredientForm";
+import { useIngredient } from "../IngredientForm/useIngredient";
 
 export const RecipeForm: React.FC = () => {
-  const [ingredients, setIngredients] = React.useState<Ingredient[]>([]);
   const [values, setValues] = React.useState({});
-  const [newIngredient, setNewIngredient] = React.useState<string>();
-  const [error, setError] = React.useState<string>();
-
-  const [addIngredientMutation] = useMutation<
-    { addIngredient: { ingredient: Ingredient[] } },
-    MutationAddIngredientArgs
-  >(ADD_INGREDIENT_MUTATION);
-  const [deleteIngredientMutation] = useMutation<
-    { deleteIngredient: { ingredient: Ingredient[] } },
-    MutationDeleteIngredientArgs
-  >(DELETE_INGREDIENT_MUTATION);
-  const [updateIngredientMutation] = useMutation<
-    { updateIngredient: { ingredient: Ingredient[] } },
-    MutationUpdateIngredientArgs
-  >(UPDATE_INGREDIENT_MUTATION);
-
-  const deleteIngredient = React.useCallback(
-    async (passedId: string) => {
-      const result = await deleteIngredientMutation({
-        variables: { filter: { id: [passedId] } },
-      });
-
-      if (!result.data) {
-        setError("Could not delete ingredient");
-        return;
-      }
-
-      const deletedIds = result.data.deleteIngredient.ingredient.map(
-        ({ id }) => id
-      );
-
-      setIngredients(
-        ingredients.filter(
-          ({ id: currentId }) => !deletedIds.includes(currentId)
-        )
-      );
-    },
-    [deleteIngredientMutation, ingredients]
-  );
-
-  const addIngredient = React.useCallback(async () => {
-    if (!newIngredient) return;
-    const result = await addIngredientMutation({
-      variables: {
-        input: [
-          {
-            name: newIngredient,
-            amount: 0,
-            measurement: Measurement.Gramm,
-          },
-        ],
-      },
-    });
-
-    if (!result.data) {
-      setError("Could not write ingredient");
-      return;
-    }
-
-    setIngredients([...ingredients, ...result.data.addIngredient.ingredient]);
-  }, [addIngredientMutation, ingredients, newIngredient]);
-
-  const updateIngredient = React.useCallback(
-    async ({ id, amount, measurement, name }: Ingredient) => {
-      const result = await updateIngredientMutation({
-        variables: {
-          input: {
-            filter: { id: [id] },
-            set: { amount, measurement, name },
-          },
-        },
-      });
-
-      if (!result.data) {
-        setError("Could not write ingredient");
-        return;
-      }
-
-      setIngredients([
-        ...ingredients.filter(({ id: currentId }) => id !== currentId),
-        ...result.data.updateIngredient.ingredient,
-      ]);
-    },
-    [ingredients, updateIngredientMutation]
-  );
+  const [newIngredientName, setNewIngredientName] = React.useState<string>();
+  const {
+    status: ingredientStatus,
+    data: ingredients,
+    error,
+    addIngredient,
+    updateIngredient,
+    deleteIngredient,
+  } = useIngredient();
 
   return (
     <Main>
@@ -165,14 +76,17 @@ export const RecipeForm: React.FC = () => {
             <Box direction="row">
               <TextInput
                 placeholder="Add new ingredient"
-                onChange={(e) => setNewIngredient(e.target.value)}
+                onChange={(e) => setNewIngredientName(e.target.value)}
               />
               <Button
                 type="button"
                 primary
-                disabled={!newIngredient}
+                disabled={!newIngredientName || ingredientStatus === "loading"}
                 label="+"
-                onClick={addIngredient}
+                onClick={async () => {
+                  await addIngredient(newIngredientName || null);
+                  setNewIngredientName(undefined);
+                }}
               />
             </Box>
           </Box>
