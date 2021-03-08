@@ -6,12 +6,12 @@ import {
   MutationAddIngredientArgs,
   MutationDeleteIngredientArgs,
   MutationUpdateIngredientArgs,
-} from "../../typings/graphql";
+} from "../typings/graphql";
 import {
   ADD_INGREDIENT_MUTATION,
   DELETE_INGREDIENT_MUTATION,
   UPDATE_INGREDIENT_MUTATION,
-} from "./queries";
+} from "./useIngredient.queries";
 
 type MutationStatus = "idle" | "loading" | "error" | "success";
 

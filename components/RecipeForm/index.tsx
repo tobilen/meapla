@@ -13,7 +13,7 @@ import {
 } from "grommet";
 import { Spacer } from "../styles";
 import { IngredientForm } from "../IngredientForm";
-import { useIngredient } from "../IngredientForm/useIngredient";
+import { useIngredient } from "../../hooks/useIngredient";
 
 export const RecipeForm: React.FC = () => {
   const [values, setValues] = React.useState({});
