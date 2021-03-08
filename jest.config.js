@@ -3,6 +3,7 @@ module.exports = {
   roots: ["<rootDir>"],
   moduleFileExtensions: ["ts", "tsx", "js", "json", "jsx"],
   testPathIgnorePatterns: ["/.next/"],
+  testEnvironment: "jest-environment-jsdom-sixteen",
   transform: {
     "^.+\\.(ts|tsx)$": "babel-jest",
   },
