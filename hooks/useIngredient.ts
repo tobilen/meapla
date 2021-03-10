@@ -11,7 +11,7 @@ import {
   ADD_INGREDIENT_MUTATION,
   DELETE_INGREDIENT_MUTATION,
   UPDATE_INGREDIENT_MUTATION,
-} from "./useIngredient.queries";
+} from "../queries/ingredient";
 
 type MutationStatus = "idle" | "loading" | "error" | "success";
 
@@ -46,7 +46,7 @@ export const useIngredient: UseIngredient = () => {
     async (passedId: Ingredient["id"]) => {
       setStatus("loading");
       const result = await deleteIngredientMutation({
-        variables: { filter: { id: [passedId] } },
+        variables: { filter: { ids: [passedId] } },
       });
 
       if (!result.data) {
@@ -101,7 +101,7 @@ export const useIngredient: UseIngredient = () => {
       const result = await updateIngredientMutation({
         variables: {
           input: {
-            filter: { id: [id] },
+            filter: { ids: [id] },
             set: { amount, measurement, name },
           },
         },

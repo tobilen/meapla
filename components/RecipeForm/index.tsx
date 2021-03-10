@@ -17,7 +17,7 @@ import { useIngredient } from "../../hooks/useIngredient";
 
 export const RecipeForm: React.FC = () => {
   const [values, setValues] = React.useState({});
-  const [newIngredientName, setNewIngredientName] = React.useState<string>();
+  const [newIngredientName, setNewIngredientName] = React.useState("");
   const {
     status: ingredientStatus,
     data: ingredients,
@@ -35,7 +35,6 @@ export const RecipeForm: React.FC = () => {
       <Form
         value={values}
         onChange={(nextValue) => {
-          console.log("changed values", nextValue);
           setValues(nextValue as Record<string, unknown>);
         }}
         onReset={() => setValues({})}
@@ -75,17 +74,20 @@ export const RecipeForm: React.FC = () => {
             ))}
             <Box direction="row">
               <TextInput
+                value={newIngredientName}
                 placeholder="Add new ingredient"
+                aria-label="Enter new ingredient name"
                 onChange={(e) => setNewIngredientName(e.target.value)}
               />
               <Button
                 type="button"
                 primary
                 disabled={!newIngredientName || ingredientStatus === "loading"}
+                title="Add new ingredient"
                 label="+"
                 onClick={async () => {
-                  await addIngredient(newIngredientName || null);
-                  setNewIngredientName(undefined);
+                  await addIngredient(newIngredientName);
+                  setNewIngredientName("");
                 }}
               />
             </Box>

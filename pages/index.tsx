@@ -2,7 +2,8 @@ import * as React from "react";
 import Head from "next/head";
 import { GetStaticProps } from "next";
 import "normalize.css";
-import styles from "../styles/Home.module.css";
+import { Main } from "grommet";
+import styled from "styled-components";
 import { ApolloClientState, initializeApollo } from "../lib/apolloClient";
 import { RecipeForm } from "../components/RecipeForm";
 
@@ -19,15 +20,19 @@ export const getStaticProps: GetStaticProps<{
   };
 };
 
+const CenteredMain = styled(Main)`
+  margin: 0 auto;
+`;
+
 const Home: React.FC = () => (
-  <div className={styles.container}>
+  <CenteredMain width="large">
     <Head>
       <title>meapla</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
     <RecipeForm />
-  </div>
+  </CenteredMain>
 );
 
 export default Home;

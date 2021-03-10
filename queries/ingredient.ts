@@ -1,27 +1,23 @@
 import { gql } from "@apollo/client";
 
 export const ADD_INGREDIENT_MUTATION = gql`
-  mutation addIngredient($input: [AddIngredientInput!]!) {
+  mutation addIngredient($input: [IngredientInput!]!) {
     addIngredient(input: $input) {
-      ingredient {
-        id
-        name
-        amount
-        measurement
-      }
+      id
+      name
+      amount
+      measurement
     }
   }
 `;
 
 export const UPDATE_INGREDIENT_MUTATION = gql`
-  mutation updateIngredient($input: UpdateIngredientInput!) {
+  mutation updateIngredient($input: IngredientUpdateInput!) {
     updateIngredient(input: $input) {
-      ingredient {
-        id
-        name
-        amount
-        measurement
-      }
+      id
+      name
+      amount
+      measurement
     }
   }
 `;
@@ -29,12 +25,10 @@ export const UPDATE_INGREDIENT_MUTATION = gql`
 export const DELETE_INGREDIENT_MUTATION = gql`
   mutation deleteIngredient($filter: IngredientFilter!) {
     deleteIngredient(filter: $filter) {
-      ingredient {
-        id
-        name
-        amount
-        measurement
-      }
+      id
+      name
+      amount
+      measurement
     }
   }
 `;

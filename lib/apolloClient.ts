@@ -5,11 +5,16 @@ export type ApolloClientState = Record<string, unknown>;
 
 let apolloClientSingleton: ApolloClient<ApolloClientState>;
 
+const uri =
+  process.env.NODE_ENV === "production"
+    ? "https://meapla-server.herokuapp.com"
+    : "http://localhost:4000";
+
 const createApolloClient = () =>
   new ApolloClient({
     ssrMode: typeof window === "undefined", // set to true for SSR
     link: new HttpLink({
-      uri: "https://meapla.eu-central-1.aws.cloud.dgraph.io/graphql",
+      uri,
     }),
     cache: new InMemoryCache(),
     connectToDevTools: true,
