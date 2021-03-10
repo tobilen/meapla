@@ -44,4 +44,5 @@ yarn-error.log*
 
 # generated files
 schema.graphql
+introspection.json
 typings/graphql.ts

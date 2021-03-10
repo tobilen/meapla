@@ -1473,6 +1473,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.10.0":
+  version: 7.13.10
+  resolution: "@babel/runtime@npm:7.13.10"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 22014226b96a8c8e8d4e8bcdb011f317d1b32881aef424a669dc6ceaee14993d3609172967853cbf9c25c724c25145d45885b6c9df56ba241c12820776607f1f
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.12.13, @babel/template@npm:^7.12.7, @babel/template@npm:^7.3.3":
   version: 7.12.13
   resolution: "@babel/template@npm:7.12.13"
@@ -8652,6 +8661,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-graphql@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "eslint-plugin-graphql@npm:4.0.0"
+  dependencies:
+    "@babel/runtime": ^7.10.0
+    graphql-config: ^3.0.2
+    lodash.flatten: ^4.4.0
+    lodash.without: ^4.4.0
+  peerDependencies:
+    graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: 3ab5bec08e29355b7b4c245a03bb82ea4df0bc43fc7ff4d4199c59bef62a6d141bdce28ed4d3180702f533ecb721b206c3f1d3ed49d545256c100c93197ad837
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-import@npm:^2.22.1":
   version: 2.22.1
   resolution: "eslint-plugin-import@npm:2.22.1"
@@ -10117,7 +10140,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"graphql-config@npm:^3.2.0":
+"graphql-config@npm:^3.0.2, graphql-config@npm:^3.2.0":
   version: 3.2.0
   resolution: "graphql-config@npm:3.2.0"
   dependencies:
@@ -12948,6 +12971,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"lodash.flatten@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "lodash.flatten@npm:4.4.0"
+  checksum: f22a7f6f163256d87345b07c76122e03d03abbf943b6c3aa5e5fafb7d5bce765013aedfc2aae7e649af0907287a2cf85de24237dbdd3ecd485a77d56e070b54c
+  languageName: node
+  linkType: hard
+
 "lodash.get@npm:^4":
   version: 4.4.2
   resolution: "lodash.get@npm:4.4.2"
@@ -13015,6 +13045,13 @@ fsevents@^1.2.7:
   version: 4.5.0
   resolution: "lodash.uniq@npm:4.5.0"
   checksum: 47cb25b59bf40ef3bdf441b7b6cb41d0b95ae0ca576be2c206724dd66041fa8aadab55c1210792671aa0b1c9878d5c0be48927bf4d22f3ed50e5f79d3b2e90b7
+  languageName: node
+  linkType: hard
+
+"lodash.without@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "lodash.without@npm:4.4.0"
+  checksum: 3a6ab61a2551f0920c92e0affe4c9645536bad38e5c52c7430e59433f87fd21f9cfe17c06b1bfe59aa3f0dde10535c700392e669aa808f0c3622791188f41966
   languageName: node
   linkType: hard
 
@@ -13400,6 +13437,7 @@ fsevents@^1.2.7:
     eslint-config-airbnb: ^18.2.1
     eslint-config-prettier: ^8.0.0
     eslint-import-resolver-node: ^0.3.4
+    eslint-plugin-graphql: ^4.0.0
     eslint-plugin-import: ^2.22.1
     eslint-plugin-jest: ^24.1.5
     eslint-plugin-jest-dom: ^3.6.5
