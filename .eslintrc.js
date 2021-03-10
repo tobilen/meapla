@@ -19,6 +19,7 @@ module.exports = {
     "prettier",
     "plugin:jest/recommended",
     "plugin:jest-dom/recommended",
+    "plugin:json/recommended",
   ],
   plugins: [
     "prettier",
@@ -28,6 +29,7 @@ module.exports = {
     "import",
     "styled-components-a11y",
     "graphql",
+    "json",
   ],
   env: {
     browser: true,
