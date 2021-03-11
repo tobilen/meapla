@@ -1,12 +1,11 @@
 import * as React from "react";
 import { Story } from "@storybook/react";
 import { Measurement } from "../../typings/graphql";
-import { GrommetDecorator } from "../../.storybook/GrommetDecorator";
+import { WrapperDecorator } from "../../.storybook/WrapperDecorator";
 import { IngredientForm, Props } from "./index";
 
 export default {
   title: "IngredientForm",
-  decorators: [GrommetDecorator],
 };
 
 const props: Props = {
@@ -22,3 +21,6 @@ const props: Props = {
 };
 
 export const Default: Story = () => <IngredientForm {...props} />;
+
+export const Wrapped: Story = () => <IngredientForm {...props} />;
+Wrapped.decorators = [WrapperDecorator];

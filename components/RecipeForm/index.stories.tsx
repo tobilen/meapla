@@ -1,4 +1,5 @@
 import { Story } from "@storybook/react";
+import { WrapperDecorator } from "../../.storybook/WrapperDecorator";
 import { RecipeForm } from "./index";
 
 export default {
@@ -6,3 +7,6 @@ export default {
 };
 
 export const Default: Story = () => <RecipeForm />;
+
+export const Wrapped: Story = () => <RecipeForm />;
+Wrapped.decorators = [WrapperDecorator];
