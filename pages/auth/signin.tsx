@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextComponentType, NextPageContext } from "next";
 import { providers as getProviders } from "next-auth/client";
 import { SignIn as SignInComponent } from "../../components/SignIn";
-import { Wrapper } from "../../components/Page";
+import { Page } from "../../components/Page";
 
 type Await<T> = T extends {
   then(onfulfilled?: (value: infer U) => unknown): unknown;
@@ -20,9 +20,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => ({
 });
 
 const SignIn: NextComponentType<NextPageContext, unknown, Props> = (props) => (
-  <Wrapper title="meapla - Sign in">
+  <Page title="meapla - Sign in">
     <SignInComponent {...props} />
-  </Wrapper>
+  </Page>
 );
 
 export default SignIn;

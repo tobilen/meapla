@@ -3814,6 +3814,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/gravatar-url@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@types/gravatar-url@npm:3.0.2"
+  dependencies:
+    gravatar-url: "*"
+  checksum: e7eea64c35b2ff466142c6db7f5b71f8f7b3f7799ea13446b16177745d422a24c53602347dfc9cc18d3de304be9b292742ec83ed7a92528c7bb85c4dff851a9e
+  languageName: node
+  linkType: hard
+
 "@types/hast@npm:^2.0.0":
   version: 2.3.1
   resolution: "@types/hast@npm:2.3.1"
@@ -6121,6 +6130,13 @@ __metadata:
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 4f2288662f3d4eadbb82d4daa4a7d7976a28fa3c7eb4102c9b4033b03e5be4574ba123ac52a7c103cde4cb7b2d2afc1dbe41817ca15a29ff21ecd258d0286047
+  languageName: node
+  linkType: hard
+
+"blueimp-md5@npm:^2.10.0":
+  version: 2.18.0
+  resolution: "blueimp-md5@npm:2.18.0"
+  checksum: cc115b7e0f5573a26a3a6af699f98f7d29477bd529ffaee06ba8dcb2b470f88b0e762d09df771bc356fcdcfdb0d1d02cd8529889f32b03c7d3baf42817c46d67
   languageName: node
   linkType: hard
 
@@ -10320,6 +10336,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"gravatar-url@npm:*, gravatar-url@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "gravatar-url@npm:3.1.0"
+  dependencies:
+    md5-hex: ^3.0.1
+    type-fest: ^0.8.1
+  checksum: 6f476d37d92121a861d5f9b6f5df378611077e8ec9ef7f9723c0cf5427f53d9909faf0dc678655774712a00dd361fe7a7d5ba9f556073fb1cdeefeb9251ce7c5
+  languageName: node
+  linkType: hard
+
 "grommet-icons@npm:^4.5.0":
   version: 4.5.0
   resolution: "grommet-icons@npm:4.5.0"
@@ -13402,6 +13428,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"md5-hex@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "md5-hex@npm:3.0.1"
+  dependencies:
+    blueimp-md5: ^2.10.0
+  checksum: 462fbbc450234c6138ce99e2fe96c491de0202ea1130eea74cf526be0c65f37b09fad39d6abe3c4f976f4cd2dd377323a3751e64f2dc25113031dd26d250e03b
+  languageName: node
+  linkType: hard
+
 "md5.js@npm:^1.3.4":
   version: 1.3.5
   resolution: "md5.js@npm:1.3.5"
@@ -13529,6 +13564,7 @@ fsevents@^1.2.7:
     "@testing-library/react": ^11.2.5
     "@testing-library/react-hooks": ^5.0.3
     "@testing-library/user-event": ^12.7.1
+    "@types/gravatar-url": ^3.0.2
     "@types/jest": ^26.0.20
     "@types/next-auth": ^3.7.1
     "@types/node": ^14.14.31
@@ -13560,6 +13596,7 @@ fsevents@^1.2.7:
     eslint-plugin-styled-components-a11y: ^0.0.32
     get-graphql-schema: ^2.1.2
     graphql: ^15.5.0
+    gravatar-url: ^3.1.0
     grommet: ^2.16.3
     grommet-icons: ^4.5.0
     jest: ^26.6.3

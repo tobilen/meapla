@@ -1,6 +1,5 @@
 import * as React from "react";
 import type { AppProps } from "next/app";
-import { Head } from "next/document";
 import { createGlobalStyle } from "styled-components";
 import { ApolloProvider } from "@apollo/client";
 import { Grommet } from "grommet";
