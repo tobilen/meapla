@@ -1,12 +1,13 @@
 import * as React from "react";
 import Head from "next/head";
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextComponentType } from "next";
 import "normalize.css";
 import { Main, Button } from "grommet";
 import styled from "styled-components";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { ApolloClientState, initializeApollo } from "../lib/apolloClient";
 import { RecipeForm } from "../components/RecipeForm";
+import { Wrapper } from "../components/Page";
 
 export const getStaticProps: GetStaticProps<{
   initialApolloState: ApolloClientState;
@@ -21,30 +22,13 @@ export const getStaticProps: GetStaticProps<{
   };
 };
 
-const CenteredMain = styled(Main)`
-  margin: 0 auto;
-`;
-
-const Home: React.FC = () => {
+const Home: NextComponentType = () => {
   const [session, loading] = useSession();
 
   if (loading) return <>loading...</>;
 
   return (
-    <CenteredMain width="large">
-      <Head>
-        <title>meapla</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {!session && (
-        <>
-          Not signed in <br />
-          <Button onClick={() => signIn()} primary>
-            Sign in
-          </Button>
-        </>
-      )}
+    <Wrapper title="meapla">
       {session && (
         <>
           Signed in as {session.user.email} <br />
@@ -54,7 +38,7 @@ const Home: React.FC = () => {
           <RecipeForm />
         </>
       )}
-    </CenteredMain>
+    </Wrapper>
   );
 };
 
