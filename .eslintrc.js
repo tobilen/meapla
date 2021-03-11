@@ -57,6 +57,7 @@ module.exports = {
       "error",
       { selector: "TSEnumDeclaration", message: "Don't declare enums" },
     ],
+    "no-console": ["error", { allow: ["warn", "error"] }],
     quotes: ["error", "double", { avoidEscape: true }],
     "prettier/prettier": ["error"],
     "react-hooks/rules-of-hooks": "error",

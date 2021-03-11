@@ -1,9 +1,7 @@
 import * as React from "react";
-import Head from "next/head";
 import { GetStaticProps, NextComponentType } from "next";
 import "normalize.css";
-import { Main, Button } from "grommet";
-import styled from "styled-components";
+import { Button } from "grommet";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { ApolloClientState, initializeApollo } from "../lib/apolloClient";
 import { RecipeForm } from "../components/RecipeForm";
@@ -25,13 +23,18 @@ export const getStaticProps: GetStaticProps<{
 const Home: NextComponentType = () => {
   const [session, loading] = useSession();
 
+  React.useEffect(() => {
+    if (!loading && !session) signIn().catch(console.error);
+  }, [loading, session]);
+
   if (loading) return <>loading...</>;
+  if (!session) return null;
 
   return (
     <Wrapper title="meapla">
       {session && (
         <>
-          Signed in as {session.user.email} <br />
+          Signed in as {session.user.name} <br />
           <Button onClick={() => signOut()} primary>
             Sign out
           </Button>

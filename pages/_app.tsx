@@ -4,6 +4,7 @@ import { createGlobalStyle } from "styled-components";
 import { ApolloProvider } from "@apollo/client";
 import { Grommet } from "grommet";
 import { grommet } from "grommet/themes";
+import { Provider as AuthProvider } from "next-auth/client";
 import { useApollo } from "../lib/apolloClient";
 
 const GlobalStyle = createGlobalStyle`
@@ -20,9 +21,11 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     <>
       <GlobalStyle />
       <Grommet theme={grommet}>
-        <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
-        </ApolloProvider>
+        <AuthProvider session={pageProps.session}>
+          <ApolloProvider client={apolloClient}>
+            <Component {...pageProps} />
+          </ApolloProvider>
+        </AuthProvider>
       </Grommet>
     </>
   );
