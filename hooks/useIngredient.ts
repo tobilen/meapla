@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client";
 import {
   Ingredient,
   Measurement,
+  Mutation,
   MutationAddIngredientArgs,
   MutationDeleteIngredientArgs,
   MutationUpdateIngredientArgs,
@@ -30,15 +31,15 @@ export const useIngredient: UseIngredient = () => {
   const [status, setStatus] = React.useState<MutationStatus>("idle");
 
   const [addIngredientMutation] = useMutation<
-    { addIngredient: { ingredient: Ingredient[] } },
+    { addIngredient: Mutation["addIngredient"] },
     MutationAddIngredientArgs
   >(ADD_INGREDIENT_MUTATION);
   const [deleteIngredientMutation] = useMutation<
-    { deleteIngredient: { ingredient: Ingredient[] } },
+    { deleteIngredient: Mutation["deleteIngredient"] },
     MutationDeleteIngredientArgs
   >(DELETE_INGREDIENT_MUTATION);
   const [updateIngredientMutation] = useMutation<
-    { updateIngredient: { ingredient: Ingredient[] } },
+    { updateIngredient: Mutation["updateIngredient"] },
     MutationUpdateIngredientArgs
   >(UPDATE_INGREDIENT_MUTATION);
 
@@ -55,7 +56,7 @@ export const useIngredient: UseIngredient = () => {
         return;
       }
 
-      const deletedIds = result.data.deleteIngredient.ingredient.map(
+      const deletedIds = result.data.deleteIngredient.ingredients.map(
         ({ id }) => id
       );
 
@@ -89,7 +90,7 @@ export const useIngredient: UseIngredient = () => {
         return;
       }
 
-      setData([...data, ...result.data.addIngredient.ingredient]);
+      setData([...data, ...result.data.addIngredient.ingredients]);
       setStatus("success");
     },
     [addIngredientMutation, data]
@@ -115,7 +116,7 @@ export const useIngredient: UseIngredient = () => {
 
       setData([
         ...data.filter(({ id: currentId }) => id !== currentId),
-        ...result.data.updateIngredient.ingredient,
+        ...result.data.updateIngredient.ingredients,
       ]);
       setStatus("success");
     },

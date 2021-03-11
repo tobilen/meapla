@@ -5,8 +5,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "update-schema": "get-graphql-schema \"https://meapla-server.herokuapp.com\" > schema.graphql",
-    "graphql-codegen": "yarn update-schema && graphql-codegen --config codegen.yml",
+    "update-schema:dev": "get-graphql-schema \"http://localhost:4000\" > schema.graphql",
+    "update-schema:production": "get-graphql-schema \"https://meapla-server.herokuapp.com\" > schema.graphql",
+    "codegen:dev": "yarn update-schema:dev && graphql-codegen --config codegen.yml",
+    "codegen:production": "yarn update-schema:production && graphql-codegen --config codegen.yml",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -17,7 +19,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages",
-    "postinstall": "yarn graphql-codegen"
+    "postinstall": "yarn codegen:production"
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",

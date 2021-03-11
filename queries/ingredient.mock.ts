@@ -1,6 +1,7 @@
 import { MockedResponse } from "@apollo/client/testing";
 import {
   Ingredient,
+  Mutation,
   MutationAddIngredientArgs,
   MutationDeleteIngredientArgs,
   MutationUpdateIngredientArgs,
@@ -14,7 +15,7 @@ import {
 export const mockAddIngredient: (
   ingredient: Ingredient
 ) => MockedResponse<{
-  addIngredient: { ingredient: Ingredient[] };
+  addIngredient: Mutation["addIngredient"];
 }> = (ingredient) => {
   const variables: MutationAddIngredientArgs = {
     input: [
@@ -34,7 +35,7 @@ export const mockAddIngredient: (
     result: {
       data: {
         addIngredient: {
-          ingredient: [ingredient],
+          ingredients: [ingredient],
         },
       },
     },
@@ -44,7 +45,7 @@ export const mockAddIngredient: (
 export const mockDeleteIngredient: (
   ingredient: Ingredient
 ) => MockedResponse<{
-  deleteIngredient: { ingredient: Ingredient[] };
+  deleteIngredient: Mutation["deleteIngredient"];
 }> = (ingredient) => {
   const variables: MutationDeleteIngredientArgs = {
     filter: {
@@ -60,7 +61,7 @@ export const mockDeleteIngredient: (
     result: {
       data: {
         deleteIngredient: {
-          ingredient: [ingredient],
+          ingredients: [ingredient],
         },
       },
     },
@@ -70,7 +71,7 @@ export const mockDeleteIngredient: (
 export const mockUpdateIngredient: (
   ingredient: Ingredient
 ) => MockedResponse<{
-  updateIngredient: { ingredient: Ingredient[] };
+  updateIngredient: Mutation["updateIngredient"];
 }> = (ingredient) => {
   const variables: MutationUpdateIngredientArgs = {
     input: {
@@ -93,7 +94,7 @@ export const mockUpdateIngredient: (
     result: {
       data: {
         updateIngredient: {
-          ingredient: [ingredient],
+          ingredients: [ingredient],
         },
       },
     },
