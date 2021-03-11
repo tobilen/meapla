@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => ({
 });
 
 const SignIn: NextComponentType<NextPageContext, unknown, Props> = (props) => (
-  <Wrapper title="Sign in">
+  <Wrapper title="meapla - Sign in">
     <SignInComponent {...props} />
   </Wrapper>
 );

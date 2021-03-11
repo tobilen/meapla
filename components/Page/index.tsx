@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Head } from "next/document";
+import Head from "next/head";
 import { CenteredMain } from "./styles";
 
 export const Wrapper: React.FC<{ title: string }> = ({ children, title }) => (
