@@ -2,12 +2,15 @@ import * as React from "react";
 import Link from "next/link";
 import { Box, Button, Grid, Heading } from "grommet";
 import { signIn } from "next-auth/client";
+import { useRouter } from "next/router";
 import { Props as SignInPageProps } from "../../pages/auth/signin";
 import { Spacer } from "../styles";
 
 export type Props = SignInPageProps;
 
 export const SignIn: React.FC<Props> = ({ providers }) => {
+  const router = useRouter();
+
   if (!providers || Object.keys(providers).length === 0)
     return <>Login is not possible at this time.</>;
 
@@ -22,7 +25,11 @@ export const SignIn: React.FC<Props> = ({ providers }) => {
         {Object.values(providers).map((provider) => (
           <Box key={provider.name}>
             <Button
-              onClick={() => signIn(provider.id)}
+              onClick={async () => {
+                await signIn(provider.id, {
+                  callbackUrl: `${router.query.callbackUrl}`,
+                });
+              }}
               primary
               label={`Sign in with ${provider.name}`}
             />

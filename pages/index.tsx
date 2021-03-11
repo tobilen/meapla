@@ -24,7 +24,8 @@ const Home: NextComponentType = () => {
   const [session, loading] = useSession();
 
   React.useEffect(() => {
-    if (!loading && !session) signIn().catch(console.error);
+    if (loading) return;
+    if (!session) signIn().catch(console.error);
   }, [loading, session]);
 
   if (loading) return <>loading...</>;
