@@ -4,17 +4,15 @@ import { useSession } from "next-auth/client";
 import { Navbar } from "../Navbar";
 import { CenteredMain } from "./styles";
 
-export const Page: React.FC<{ title: string }> = ({ children, title }) => {
-  const [session, loading] = useSession();
+export const Page: React.FC = ({ children }) => {
+  const [session] = useSession();
 
-  if (loading) return <>loading</>;
   return (
     <>
       <Navbar user={session?.user} />
-
       <CenteredMain width="large">
         <Head>
-          <title>{title}</title>
+          <title>meapla</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 

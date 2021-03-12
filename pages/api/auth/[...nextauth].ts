@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import { signInUrl } from "../../../appSettings";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -20,6 +21,6 @@ export default NextAuth({
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: signInUrl,
   },
 });
