@@ -4,13 +4,15 @@ import jwt from "jsonwebtoken";
 import { signInUrl } from "../../../appSettings";
 
 export default NextAuth({
-  // Configure one or more authentication providers
   providers: [
     Providers.GitHub({
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
     }),
-    // ...add more providers here
+    Providers.Google({
+      clientId: process.env.GOOGLE_ID || "",
+      clientSecret: process.env.GOOGLE_SECRET || "",
+    }),
   ],
 
   database: process.env.DATABASE_URL,
