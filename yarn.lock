@@ -13566,6 +13566,7 @@ fsevents@^1.2.7:
     "@testing-library/user-event": ^12.7.1
     "@types/gravatar-url": ^3.0.2
     "@types/jest": ^26.0.20
+    "@types/jsonwebtoken": ^8.5.0
     "@types/next-auth": ^3.7.1
     "@types/node": ^14.14.31
     "@types/prop-types": ^15.7.3
@@ -13606,6 +13607,7 @@ fsevents@^1.2.7:
     jest-junit: ^12.0.0
     jest-styled-components: ^7.0.3
     jest-watch-typeahead: ^0.6.1
+    jsonwebtoken: ^8.5.1
     next: 10.0.8
     next-auth: ^3.11.2
     normalize.css: ^8.0.1
