@@ -131,6 +131,16 @@ module.exports = {
             group: "builtin",
             position: "after",
           },
+          {
+            pattern: "next",
+            group: "external",
+            position: "before",
+          },
+          {
+            pattern: "next/**",
+            group: "external",
+            position: "before",
+          },
         ],
         pathGroupsExcludedImportTypes: ["react"],
         "newlines-between": "never",

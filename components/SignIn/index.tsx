@@ -1,8 +1,8 @@
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Box, Button, Grid, Heading } from "grommet";
 import { signIn } from "next-auth/client";
-import { useRouter } from "next/router";
 import { Props as SignInPageProps } from "../../pages/auth/signin";
 import { Spacer } from "../styles";
 

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { GetStaticProps, NextComponentType } from "next";
-import "normalize.css";
 import { signIn, useSession } from "next-auth/client";
 import { ApolloClientState, initializeApollo } from "../lib/apolloClient";
 import { RecipeForm } from "../components/RecipeForm";
@@ -19,7 +18,7 @@ export const getStaticProps: GetStaticProps<{
   };
 };
 
-const Home: NextComponentType = () => {
+const Index: NextComponentType = () => {
   const [session, loading] = useSession();
 
   React.useEffect(() => {
@@ -34,4 +33,4 @@ const Home: NextComponentType = () => {
   );
 };
 
-export default Home;
+export default Index;

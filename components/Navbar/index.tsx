@@ -1,7 +1,7 @@
 import * as React from "react";
+import { useRouter } from "next/router";
 import { Box, Header, ResponsiveContext, Menu, Nav } from "grommet";
 import { User } from "next-auth";
-import { useRouter } from "next/router";
 import { Link } from "../styles";
 import { SignInBar } from "./SignInBar";
 import { UserBar } from "./UserBar";

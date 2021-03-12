@@ -1,10 +1,12 @@
 import * as React from "react";
+import { GetServerSideProps } from "next";
 import type { AppProps } from "next/app";
+import { getSession, Provider as AuthProvider } from "next-auth/client";
 import { createGlobalStyle } from "styled-components";
+import "normalize.css";
 import { ApolloProvider } from "@apollo/client";
 import { Grommet } from "grommet";
 import { grommet } from "grommet/themes";
-import { Provider as AuthProvider } from "next-auth/client";
 import { useApollo } from "../lib/apolloClient";
 
 const GlobalStyle = createGlobalStyle`
