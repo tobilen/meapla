@@ -53,6 +53,8 @@ export default NextAuth({
     signIn: signInUrl,
   },
   callbacks: {
+    signIn: async (user, account, profile) =>
+      !(account.provider === "github" && profile.name !== "Tobias Lengsholz"),
     session: (session, token: User & { sub: string }) => {
       if (!process.env.NEXTAUTH_JWT_SECRET)
         throw new Error("JWT Secret was not provided");
