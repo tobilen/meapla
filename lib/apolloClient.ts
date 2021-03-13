@@ -1,5 +1,11 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  from,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 export type ApolloClientState = Record<string, unknown>;
@@ -18,6 +24,20 @@ const authLink = (token: string | null) =>
       authorization: token ? `Bearer ${token}` : "",
     },
   }));
+
+// Strip __typename from variables
+const middleWareLink = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    const omitTypename = (key: string, value: unknown) =>
+      key === "__typename" ? undefined : value;
+    // eslint-disable-next-line no-param-reassign
+    operation.variables = JSON.parse(
+      JSON.stringify(operation.variables),
+      omitTypename
+    );
+  }
+  return forward(operation);
+});
 
 const createApolloClient = () =>
   new ApolloClient({
@@ -39,11 +59,13 @@ export const initializeApollo = (
   }
 
   apolloClient.setLink(
-    authLink(token).concat(
+    from([
+      authLink(token),
+      middleWareLink,
       new HttpLink({
         uri,
-      })
-    )
+      }),
+    ])
   );
 
   if (typeof window === "undefined") return apolloClient;
