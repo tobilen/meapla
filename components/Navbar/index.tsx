@@ -18,8 +18,13 @@ type MenuItem = {
 
 const navigationMenu: MenuItem[] = [
   {
-    label: "Author a recipe",
+    label: "Recipes",
     href: "/",
+    requireAuth: true,
+  },
+  {
+    label: "Author a recipe",
+    href: "/add-recipe",
     requireAuth: true,
   },
 ];
