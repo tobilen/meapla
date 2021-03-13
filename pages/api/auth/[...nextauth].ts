@@ -34,11 +34,8 @@ export default NextAuth({
         sub: token.sub,
         iat: Date.now() / 1000,
         exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-        "https://hasura.io/jwt/claims": {
-          "x-hasura-allowed-roles": ["user"],
-          "x-hasura-default-role": "user",
-          "x-hasura-role": "user",
-          "x-hasura-user-id": token.sub,
+        "https://meapla.vercel.app/jwt/claims": {
+          "x-meapla-user-id": token.sub,
         },
       };
       return jwt.sign(jwtClaims, secret, { algorithm: "HS256" });
