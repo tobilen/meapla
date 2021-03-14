@@ -60,8 +60,8 @@ export const initializeApollo = (
 
   apolloClient.setLink(
     from([
-      authLink(token),
       middleWareLink,
+      authLink(token),
       new HttpLink({
         uri,
       }),

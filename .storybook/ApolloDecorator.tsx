@@ -1,8 +1,6 @@
 import { DecoratorFn } from "@storybook/react";
-import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apolloClient";
+import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 
-export const ApolloDecorator: DecoratorFn = (story) => {
-  const client = useApollo({});
-  return <ApolloProvider client={client}>{story()}</ApolloProvider>;
-};
+export const ApolloDecorator: (mocks: MockedResponse[]) => DecoratorFn = (
+  mocks = []
+) => (story) => <MockedProvider mocks={mocks}>{story()}</MockedProvider>;

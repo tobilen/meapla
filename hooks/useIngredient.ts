@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useMutation } from "@apollo/client";
+import { nanoid } from "nanoid";
 import {
   Ingredient,
   Measurement,
@@ -76,6 +77,7 @@ export const useIngredient: UseIngredient = () => {
         variables: {
           input: [
             {
+              id: nanoid(),
               name: ingredientName,
               amount: 0,
               measurement: Measurement.Gramm,
@@ -103,7 +105,7 @@ export const useIngredient: UseIngredient = () => {
         variables: {
           input: {
             filter: { ids: [id] },
-            set: { amount, measurement, name },
+            set: { id, amount, measurement, name },
           },
         },
       });

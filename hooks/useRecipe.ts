@@ -7,6 +7,7 @@ import {
   useQuery,
 } from "@apollo/client";
 import {
+  IngredientInput,
   Mutation,
   MutationAddRecipeArgs,
   MutationDeleteRecipeArgs,
@@ -14,6 +15,7 @@ import {
   Query,
   QueryGetRecipeArgs,
   Recipe,
+  RecipeInput,
 } from "../typings/graphql";
 import {
   ADD_RECIPE_MUTATION,
@@ -34,15 +36,24 @@ type DeleteRecipeData = {
   deleteRecipe: Mutation["deleteRecipe"];
 };
 
-type UseRecipe = () => {
+type UpdateRecipeInput = RecipeInput & {
+  id: number;
+  ingredients: IngredientInput[];
+};
+
+type UseRecipe = (
+  id?: Recipe["id"]
+) => {
   data: Recipe[];
   error?: ApolloError;
   status: MutationStatus;
   addRecipe: {
-    mutate: () => Promise<FetchResult<AddRecipeData>>;
+    mutate: (recipe: RecipeInput) => Promise<FetchResult<AddRecipeData>>;
   } & MutationResult<AddRecipeData>;
   updateRecipe: {
-    mutate: (recipe: Recipe) => Promise<FetchResult<UpdateRecipeData>>;
+    mutate: (
+      recipe: UpdateRecipeInput
+    ) => Promise<FetchResult<UpdateRecipeData>>;
   } & MutationResult<UpdateRecipeData>;
   deleteRecipe: {
     mutate: (passedId: Recipe["id"]) => Promise<FetchResult<DeleteRecipeData>>;
@@ -56,11 +67,11 @@ const getStatus = (result: MutationResult): MutationStatus => {
   return "success";
 };
 
-export const useRecipe: UseRecipe = () => {
+export const useRecipe: UseRecipe = (id) => {
   const result = useQuery<
     { getRecipe: Query["getRecipe"] },
     QueryGetRecipeArgs
-  >(GET_RECIPE_QUERY);
+  >(GET_RECIPE_QUERY, { variables: { filter: { ids: id ? [id] : [] } } });
 
   const [requestAddRecipe, addRecipeResult] = useMutation<
     AddRecipeData,
@@ -76,25 +87,21 @@ export const useRecipe: UseRecipe = () => {
   >(DELETE_RECIPE_MUTATION);
 
   const addRecipe = React.useCallback(
-    () =>
+    (recipe: RecipeInput) =>
       requestAddRecipe({
         variables: {
-          input: [
-            {
-              ingredients: [],
-            },
-          ],
+          input: [recipe],
         },
       }),
     [requestAddRecipe]
   );
 
   const updateRecipe = React.useCallback(
-    async ({ id, ...set }: Recipe) =>
+    async ({ id: filterId, ...set }: UpdateRecipeInput) =>
       requestUpdateRecipe({
         variables: {
           input: {
-            filter: { ids: [id] },
+            filter: { ids: [filterId] },
             set,
           },
         },

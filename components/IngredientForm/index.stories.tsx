@@ -11,7 +11,7 @@ export default {
 const props: Props = {
   index: 0,
   ingredient: {
-    id: 0,
+    id: "0",
     name: "Butter",
     amount: 10,
     measurement: Measurement.Gramm,

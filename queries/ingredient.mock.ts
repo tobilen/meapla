@@ -20,6 +20,7 @@ export const mockAddIngredient: (
   const variables: MutationAddIngredientArgs = {
     input: [
       {
+        id: ingredient.id,
         name: ingredient.name,
         amount: ingredient.amount,
         measurement: ingredient.measurement,
@@ -79,6 +80,7 @@ export const mockUpdateIngredient: (
         ids: [ingredient.id],
       },
       set: {
+        id: ingredient.id,
         amount: ingredient.amount,
         measurement: ingredient.measurement,
         name: ingredient.name,

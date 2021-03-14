@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_RECIPE_QUERY = gql`
-  query getRecipe($input: RecipeFilter!) {
-    getRecipe(filter: $input) {
+  query getRecipe($filter: RecipeFilter!) {
+    getRecipe(filter: $filter) {
       recipes {
         id
         name

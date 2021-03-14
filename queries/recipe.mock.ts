@@ -38,6 +38,23 @@ export const mockGetRecipe: (
     },
   };
 };
+
+export const mockGetRecipeEmpty: MockedResponse<{
+  getRecipe: Query["getRecipe"];
+}> = {
+  request: {
+    query: GET_RECIPE_QUERY,
+    variables: { filter: { ids: [] } },
+  },
+  result: {
+    data: {
+      getRecipe: {
+        recipes: [],
+      },
+    },
+  },
+};
+
 export const mockAddRecipe: (
   recipe: Recipe
 ) => MockedResponse<{

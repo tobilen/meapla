@@ -13609,6 +13609,7 @@ fsevents@^1.2.7:
     jest-styled-components: ^7.0.3
     jest-watch-typeahead: ^0.6.1
     jsonwebtoken: ^8.5.1
+    nanoid: ^3.1.21
     next: 10.0.8
     next-auth: ^3.11.2
     normalize.css: ^8.0.1
@@ -14057,6 +14058,15 @@ fsevents@^1.2.7:
   bin:
     nanoid: bin/nanoid.cjs
   checksum: 4788d36edcfec7bb32ddf33ed8f1f46df2867f70e9b1993bb131f7677e04ead2b621e5d614d2736308be18db1d54208d8ab207b4586bd5b052f71fb9d4c0ebea
+  languageName: node
+  linkType: hard
+
+"nanoid@npm:^3.1.21":
+  version: 3.1.21
+  resolution: "nanoid@npm:3.1.21"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: d400484b438d54cc286e1fec43d1156cfbba976a15ad73558378b6e3779f8f8e635b635a49c425a365aa8ac9e5e2c73f098fc617f4297a9b1a38177be0592b6f
   languageName: node
   linkType: hard
 

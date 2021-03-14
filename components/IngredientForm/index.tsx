@@ -5,7 +5,7 @@ import { Ingredient, Measurement } from "../../typings/graphql";
 export type Props = {
   index: number;
   ingredient: Ingredient;
-  onDelete: (id: number) => void;
+  onDelete: (id: Ingredient["id"]) => void;
   onChange: (ingredient: Ingredient) => void;
 };
 
