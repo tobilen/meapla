@@ -42,7 +42,7 @@ export const IngredientForm: React.FC<Props> = ({
           label="(Delete)"
         />
       </Box>
-      <FormField name="amount[]" label="Amount">
+      <FormField name={`amount[${id}]`} label="Amount">
         <TextInput
           aria-label="Amount"
           name={`amount[${id}]`}
@@ -74,7 +74,7 @@ export const IngredientForm: React.FC<Props> = ({
           }}
         />
       </FormField>
-      <FormField name="ingredient[]" label="Name">
+      <FormField name={`ingredient[${id}]`} label="Name">
         <TextInput
           aria-label="Name"
           name={`ingredient[${id}]`}

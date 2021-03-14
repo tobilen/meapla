@@ -49,14 +49,17 @@ type UseRecipe = (
   status: MutationStatus;
   addRecipe: {
     mutate: (recipe: RecipeInput) => Promise<FetchResult<AddRecipeData>>;
+    status: MutationStatus;
   } & MutationResult<AddRecipeData>;
   updateRecipe: {
     mutate: (
       recipe: UpdateRecipeInput
     ) => Promise<FetchResult<UpdateRecipeData>>;
+    status: MutationStatus;
   } & MutationResult<UpdateRecipeData>;
   deleteRecipe: {
     mutate: (passedId: Recipe["id"]) => Promise<FetchResult<DeleteRecipeData>>;
+    status: MutationStatus;
   } & MutationResult<DeleteRecipeData>;
 };
 

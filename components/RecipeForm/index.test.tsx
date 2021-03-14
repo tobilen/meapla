@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { fireEvent } from "@testing-library/dom";
 import { nanoid } from "nanoid";
 import { wrapProviders } from "../../setup/wrapProviders";
-import { mockAddRecipe, mockGetRecipe } from "../../queries/recipe.mock";
+import { mockAddRecipe } from "../../queries/recipe.mock";
 import { Measurement, Recipe } from "../../typings/graphql";
 import { RecipeForm } from "./index";
 
@@ -117,7 +117,7 @@ describe("ReceipeForm", () => {
       render(
         <RecipeForm />,
         wrapProviders({
-          apollo: [mockAddRecipe(mockedRecipe), mockGetRecipe(mockedRecipe)],
+          apollo: [mockAddRecipe(mockedRecipe)],
           grommet: true,
         })
       );

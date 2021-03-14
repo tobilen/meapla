@@ -26,26 +26,16 @@ export const RecipeForm: React.FC = () => {
   const [newIngredientName, setNewIngredientName] = React.useState("");
 
   const {
-    addRecipe: { mutate: addRecipe, data: addRecipeData },
-    data: [fetchedRecipe],
-    status,
-    error,
-  } = useRecipe(recipeId);
+    addRecipe: { mutate: addRecipe, data: addRecipeData, status, error },
+  } = useRecipe();
 
   React.useEffect(() => {
     if (!addRecipeData) return;
+    const [{ id, ...storedRecipe }] = addRecipeData.addRecipe.recipes;
 
-    setRecipeId(addRecipeData.addRecipe.recipes[0].id);
+    setRecipeId(id);
+    setRecipe(storedRecipe);
   }, [addRecipeData]);
-
-  React.useEffect(() => {
-    if (!fetchedRecipe) return;
-
-    setRecipe({
-      name: fetchedRecipe.name,
-      ingredients: fetchedRecipe.ingredients,
-    });
-  }, [fetchedRecipe]);
 
   const handleIngredientChange = React.useCallback(
     (passedIngredient: Ingredient) => {
@@ -134,7 +124,7 @@ export const RecipeForm: React.FC = () => {
           />
         </FormField>
         <FormField name="thumbnail" label="Thumbnail">
-          <TextInput name="thumbnail" />
+          <TextInput aria-label="Thumbnail" name="thumbnail" />
         </FormField>
         <Box gridArea="ingredients">
           {recipe?.ingredients
