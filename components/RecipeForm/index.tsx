@@ -27,7 +27,7 @@ export const RecipeForm: React.FC = () => {
 
   const {
     addRecipe: { mutate: addRecipe, data: addRecipeData, status, error },
-  } = useRecipe();
+  } = useRecipe([]);
 
   React.useEffect(() => {
     if (!addRecipeData) return;

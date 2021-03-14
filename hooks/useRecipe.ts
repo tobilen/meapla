@@ -42,7 +42,7 @@ type UpdateRecipeInput = RecipeInput & {
 };
 
 type UseRecipe = (
-  id?: Recipe["id"]
+  ids?: Recipe["id"][]
 ) => {
   data: Recipe[];
   error?: ApolloError;
@@ -70,11 +70,11 @@ const getStatus = (result: MutationResult): MutationStatus => {
   return "success";
 };
 
-export const useRecipe: UseRecipe = (id) => {
+export const useRecipe: UseRecipe = (ids) => {
   const result = useQuery<
     { getRecipe: Query["getRecipe"] },
     QueryGetRecipeArgs
-  >(GET_RECIPE_QUERY, { variables: { filter: { ids: id ? [id] : [] } } });
+  >(GET_RECIPE_QUERY, ids && { variables: { filter: { ids } } });
 
   const [requestAddRecipe, addRecipeResult] = useMutation<
     AddRecipeData,
