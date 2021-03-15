@@ -3,6 +3,7 @@ import {
   ApolloError,
   FetchResult,
   MutationResult,
+  ObservableQuery,
   useMutation,
   useQuery,
 } from "@apollo/client";
@@ -47,6 +48,10 @@ type UseRecipe = (
   data: Recipe[];
   error?: ApolloError;
   status: MutationStatus;
+  refetch: ObservableQuery<
+    { getRecipe: Query["getRecipe"] },
+    QueryGetRecipeArgs
+  >["refetch"];
   addRecipe: {
     mutate: (recipe: RecipeInput) => Promise<FetchResult<AddRecipeData>>;
     status: MutationStatus;
@@ -124,6 +129,7 @@ export const useRecipe: UseRecipe = (ids) => {
     data: result.data?.getRecipe?.recipes || [],
     status: getStatus(result),
     error: result.error,
+    refetch: result.refetch,
     addRecipe: {
       mutate: addRecipe,
       ...addRecipeResult,
