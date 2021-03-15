@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Heading } from "grommet";
+import { useRouter } from "next/router";
+import { Box, Button, Heading } from "grommet";
 import { nanoid } from "nanoid";
 import { Spacer } from "../styles";
 import { useRecipe } from "../../hooks/useRecipe";
@@ -17,6 +18,7 @@ export type Props = {
 };
 
 export const RecipeForm: React.FC<Props> = ({ id: recipeIdProp }) => {
+  const { push } = useRouter();
   const [recipeId, setRecipeId] = React.useState<Recipe["id"] | null>(
     recipeIdProp
   );
@@ -26,13 +28,11 @@ export const RecipeForm: React.FC<Props> = ({ id: recipeIdProp }) => {
     data: [fetchedRecipe],
     updateRecipe: {
       mutate: updateRecipe,
-      data: updateRecipeData,
       status: updateRecipeStatus,
       error: updateRecipeError,
     },
     addRecipe: {
       mutate: addRecipe,
-      data: addRecipeData,
       status: addRecipeStatus,
       error: addRecipeError,
     },
@@ -47,20 +47,18 @@ export const RecipeForm: React.FC<Props> = ({ id: recipeIdProp }) => {
   }, [fetchedRecipe]);
 
   React.useEffect(() => {
-    if (!addRecipeData) return;
-    const [{ id, ...storedRecipe }] = addRecipeData.addRecipe.recipes;
-
-    setRecipeId(id);
-    setRecipe(storedRecipe);
-  }, [addRecipeData]);
+    if (updateRecipeStatus === "success")
+      push("/").catch((e) => {
+        throw e;
+      });
+  }, [push, updateRecipeStatus]);
 
   React.useEffect(() => {
-    if (!updateRecipeData) return;
-    const [{ id, ...storedRecipe }] = updateRecipeData.updateRecipe.recipes;
-
-    setRecipeId(id);
-    setRecipe(storedRecipe);
-  }, [updateRecipeData]);
+    if (addRecipeStatus === "success")
+      push("/").catch((e) => {
+        throw e;
+      });
+  }, [push, addRecipeStatus]);
 
   const handleIngredientChange = React.useCallback(
     (passedIngredient: Ingredient) => {
@@ -120,10 +118,6 @@ export const RecipeForm: React.FC<Props> = ({ id: recipeIdProp }) => {
 
   return (
     <CenteredMain width="large">
-      {recipeId && addRecipeStatus === "success" ? "Saved successfully!" : null}
-      {recipeId && updateRecipeStatus === "success"
-        ? "Updated successfully!"
-        : null}
       {addRecipeStatus === "error"
         ? `Could not create recipe! Error: ${addRecipeError}`
         : null}
@@ -133,15 +127,29 @@ export const RecipeForm: React.FC<Props> = ({ id: recipeIdProp }) => {
       <Heading>{recipeId ? "Update a recipe" : "Add a new recipe"}</Heading>
       <Spacer />
       <Fields
-        addRecipe={addRecipe}
         handleAddIngredient={handleAddIngredient}
         handleIngredientChange={handleIngredientChange}
         handleIngredientDelete={handleIngredientDelete}
         handleNameChange={handleNameChange}
-        recipeId={recipeId}
         recipe={recipe}
-        updateRecipe={updateRecipe}
       />
+      <Box direction="row" gap="medium">
+        <Button
+          primary
+          label={recipeId ? "Update" : "Create"}
+          disabled={!recipe}
+          onClick={async () => {
+            if (!recipe) return;
+
+            if (recipeId) {
+              await updateRecipe({ ...recipe, id: recipeId });
+            } else {
+              await addRecipe(recipe);
+            }
+          }}
+        />
+        <Button type="reset" label="Cancel" href="/" />
+      </Box>
     </CenteredMain>
   );
 };

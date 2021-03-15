@@ -46,7 +46,8 @@ describe("ReceipeList", () => {
     );
 
     userEvent.click(await screen.findByLabelText("Delete Bowl of Cereal"));
-    waitFor(() =>
+
+    await waitFor(() =>
       expect(screen.queryByText("Bowl of Cereal")).not.toBeInTheDocument()
     );
   });

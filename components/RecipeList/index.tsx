@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -10,8 +9,8 @@ import {
   Main,
   Text,
 } from "grommet";
-import * as Icons from "grommet-icons";
 import { useRecipe } from "../../hooks/useRecipe";
+import { AdminButton, EditIcon, TrashIcon } from "./styles";
 
 export const RecipeList: React.FC = () => {
   const { data, status, refetch, deleteRecipe } = useRecipe();
@@ -35,25 +34,24 @@ export const RecipeList: React.FC = () => {
             </CardHeader>
             <CardBody pad="medium">Body</CardBody>
             <CardFooter pad={{ horizontal: "small" }} background="light-2">
-              <Button
+              <AdminButton
+                color="dark-5"
+                hoverColor="brand"
+                href={`recipe/${recipe.id}`}
                 a11yTitle={`Edit ${recipe.name}`}
                 aria-label={`Edit ${recipe.name}`}
-                icon={<Icons.Edit color="plain" />}
-                hoverIndicator
+                icon={<EditIcon />}
               />
-              <Button
+              <AdminButton
+                color="dark-5"
+                hoverColor="neutral-4"
                 a11yTitle={`Delete ${recipe.name}`}
                 aria-label={`Delete ${recipe.name}`}
-                icon={
-                  <Icons.Trash
-                    color="red"
-                    onClick={async () => {
-                      await deleteRecipe.mutate(recipe.id);
-                      await refetch();
-                    }}
-                  />
-                }
-                hoverIndicator
+                onClick={async () => {
+                  await deleteRecipe.mutate(recipe.id);
+                  await refetch();
+                }}
+                icon={<TrashIcon />}
               />
             </CardFooter>
           </Card>

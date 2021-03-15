@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { fireEvent } from "@testing-library/dom";
@@ -13,6 +14,15 @@ import { RecipeForm } from "./index";
 
 jest.mock("nanoid", () => ({
   nanoid: jest.fn(),
+}));
+
+jest.mock("next/router", () => ({
+  __esModule: true,
+  useRouter: jest.fn(),
+}));
+const push = jest.fn().mockResolvedValue(null);
+(useRouter as jest.Mock).mockImplementation(() => ({
+  push,
 }));
 
 describe("ReceipeForm", () => {
@@ -144,7 +154,7 @@ describe("ReceipeForm", () => {
 
     userEvent.click(screen.getByText("Create"));
 
-    expect(await screen.findByText("Saved successfully!")).toBeInTheDocument();
+    await waitFor(() => expect(push).toBeCalledWith("/"));
   });
 
   it("updates a recipe", async () => {
@@ -210,8 +220,6 @@ describe("ReceipeForm", () => {
 
     userEvent.click(screen.getByText("Update"));
 
-    expect(
-      await screen.findByText("Updated successfully!")
-    ).toBeInTheDocument();
+    await waitFor(() => expect(push).toBeCalledWith("/"));
   });
 });

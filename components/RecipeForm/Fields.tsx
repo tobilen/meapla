@@ -1,29 +1,22 @@
 import * as React from "react";
 import { Box, Button, FormField, Grid, TextArea, TextInput } from "grommet";
-import { Ingredient, Recipe, RecipeInput } from "../../typings/graphql";
-import { UseRecipe } from "../../hooks/useRecipe";
+import { Ingredient, RecipeInput } from "../../typings/graphql";
 import { IngredientForm } from "../IngredientForm";
 
 export type Props = {
-  recipeId: Recipe["id"] | null;
   recipe?: RecipeInput;
   handleNameChange: React.ChangeEventHandler;
   handleIngredientChange: (passedIngredient: Ingredient) => void;
   handleIngredientDelete: (passedId: Ingredient["id"]) => void;
   handleAddIngredient: (newIngredientName: Ingredient["name"]) => void;
-  updateRecipe: ReturnType<UseRecipe>["updateRecipe"]["mutate"];
-  addRecipe: ReturnType<UseRecipe>["addRecipe"]["mutate"];
 };
 
 export const Fields: React.FC<Props> = ({
-  recipeId,
   recipe,
   handleNameChange,
   handleIngredientChange,
   handleIngredientDelete,
   handleAddIngredient,
-  updateRecipe,
-  addRecipe,
 }) => {
   const [newIngredientName, setNewIngredientName] = React.useState("");
 
@@ -101,23 +94,6 @@ export const Fields: React.FC<Props> = ({
           </FormField>
         </Box>
       </Grid>
-      <Box direction="row" gap="medium">
-        <Button
-          primary
-          label={recipeId ? "Update" : "Create"}
-          disabled={!recipe}
-          onClick={async () => {
-            if (!recipe) return;
-
-            if (recipeId) {
-              await updateRecipe({ ...recipe, id: recipeId });
-            } else {
-              await addRecipe(recipe);
-            }
-          }}
-        />
-        <Button type="reset" label="Cancel" />
-      </Box>
     </>
   );
 };
