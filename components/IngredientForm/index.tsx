@@ -74,9 +74,9 @@ export const IngredientForm: React.FC<Props> = ({
           }}
         />
       </FormField>
-      <FormField name={`ingredient[${id}]`} label="Name">
+      <FormField name={`ingredient[${id}]`} label="Ingredient name">
         <TextInput
-          aria-label="Name"
+          aria-label="Ingredient name"
           name={`ingredient[${id}]`}
           value={name}
           readOnly

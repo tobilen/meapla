@@ -1,16 +1,7 @@
 import * as React from "react";
-import {
-  Box,
-  Button,
-  FormField,
-  Grid,
-  Heading,
-  TextArea,
-  TextInput,
-} from "grommet";
+import { Heading } from "grommet";
 import { nanoid } from "nanoid";
 import { Spacer } from "../styles";
-import { IngredientForm } from "../IngredientForm";
 import { useRecipe } from "../../hooks/useRecipe";
 import {
   Ingredient,
@@ -19,15 +10,41 @@ import {
   RecipeInput,
 } from "../../typings/graphql";
 import { CenteredMain } from "../Page/styles";
+import { Fields } from "./Fields";
 
-export const RecipeForm: React.FC = () => {
-  const [recipeId, setRecipeId] = React.useState<Recipe["id"]>();
+export type Props = {
+  id: Recipe["id"] | null;
+};
+
+export const RecipeForm: React.FC<Props> = ({ id: recipeIdProp }) => {
+  const [recipeId, setRecipeId] = React.useState<Recipe["id"] | null>(
+    recipeIdProp
+  );
   const [recipe, setRecipe] = React.useState<RecipeInput>();
-  const [newIngredientName, setNewIngredientName] = React.useState("");
 
   const {
-    addRecipe: { mutate: addRecipe, data: addRecipeData, status, error },
-  } = useRecipe([]);
+    data: [fetchedRecipe],
+    updateRecipe: {
+      mutate: updateRecipe,
+      data: updateRecipeData,
+      status: updateRecipeStatus,
+      error: updateRecipeError,
+    },
+    addRecipe: {
+      mutate: addRecipe,
+      data: addRecipeData,
+      status: addRecipeStatus,
+      error: addRecipeError,
+    },
+  } = useRecipe(recipeId ? [recipeId] : []);
+
+  React.useEffect(() => {
+    setRecipeId(recipeIdProp);
+  }, [recipeIdProp]);
+
+  React.useEffect(() => {
+    setRecipe(fetchedRecipe);
+  }, [fetchedRecipe]);
 
   React.useEffect(() => {
     if (!addRecipeData) return;
@@ -36,6 +53,14 @@ export const RecipeForm: React.FC = () => {
     setRecipeId(id);
     setRecipe(storedRecipe);
   }, [addRecipeData]);
+
+  React.useEffect(() => {
+    if (!updateRecipeData) return;
+    const [{ id, ...storedRecipe }] = updateRecipeData.updateRecipe.recipes;
+
+    setRecipeId(id);
+    setRecipe(storedRecipe);
+  }, [updateRecipeData]);
 
   const handleIngredientChange = React.useCallback(
     (passedIngredient: Ingredient) => {
@@ -75,112 +100,48 @@ export const RecipeForm: React.FC = () => {
     [recipe]
   );
 
-  const handleAddIngredient = React.useCallback(async () => {
-    setRecipe({
-      ...recipe,
-      ingredients: [
-        ...(recipe?.ingredients || []),
-        {
-          id: nanoid(),
-          name: newIngredientName,
-          amount: 0,
-          measurement: Measurement.Gramm,
-        },
-      ],
-    });
-    setNewIngredientName("");
-  }, [newIngredientName, recipe]);
+  const handleAddIngredient = React.useCallback(
+    async (newIngredientName: string) => {
+      setRecipe({
+        ...recipe,
+        ingredients: [
+          ...(recipe?.ingredients || []),
+          {
+            id: nanoid(),
+            name: newIngredientName,
+            amount: 0,
+            measurement: Measurement.Gramm,
+          },
+        ],
+      });
+    },
+    [recipe]
+  );
 
   return (
     <CenteredMain width="large">
-      {recipeId && status === "success" ? "Saved successfully!" : null}
-      {status === "error"
-        ? `Could not fetch recipe from server! Error: ${error}`
+      {recipeId && addRecipeStatus === "success" ? "Saved successfully!" : null}
+      {recipeId && updateRecipeStatus === "success"
+        ? "Updated successfully!"
+        : null}
+      {addRecipeStatus === "error"
+        ? `Could not create recipe! Error: ${addRecipeError}`
+        : null}
+      {updateRecipeStatus === "error"
+        ? `Could not update recipe! Error: ${updateRecipeError}`
         : null}
       <Heading>{recipeId ? "Update a recipe" : "Add a new recipe"}</Heading>
       <Spacer />
-      <Grid
-        rows={["auto", "auto", "auto"]}
-        columns={["auto", "auto"]}
-        gap="medium"
-        areas={[
-          {
-            name: "ingredients",
-            start: [0, 1],
-            end: [1, 1],
-          },
-          {
-            name: "instructions",
-            start: [0, 2],
-            end: [1, 2],
-          },
-        ]}
-      >
-        <FormField name="name" label="Name">
-          <TextInput
-            aria-label="Name"
-            name="name"
-            onChange={handleNameChange}
-          />
-        </FormField>
-        <FormField name="thumbnail" label="Thumbnail">
-          <TextInput aria-label="Thumbnail" name="thumbnail" />
-        </FormField>
-        <Box gridArea="ingredients">
-          {recipe?.ingredients
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((ingredient, index) => (
-              <IngredientForm
-                index={index}
-                ingredient={ingredient}
-                key={`ingredient-${ingredient.id}`}
-                onDelete={handleIngredientDelete}
-                onChange={handleIngredientChange}
-              />
-            ))}
-          <Box direction="row">
-            <TextInput
-              value={newIngredientName}
-              placeholder="Add new ingredient"
-              aria-label="Enter new ingredient name"
-              onChange={(e) => setNewIngredientName(e.target.value)}
-            />
-            <Button
-              type="button"
-              primary
-              disabled={!newIngredientName}
-              title="Add new ingredient"
-              label="+"
-              onClick={handleAddIngredient}
-            />
-          </Box>
-        </Box>
-        <Box gridArea="instructions">
-          <FormField name="intructions" label="Instructions">
-            <Box
-              width="large"
-              height="medium"
-              border={{ color: "brand", size: "small" }}
-            >
-              <TextArea name="intructions" fill />
-            </Box>
-          </FormField>
-        </Box>
-      </Grid>
-      <Box direction="row" gap="medium">
-        <Button
-          type="submit"
-          primary
-          label="Save"
-          disabled={!recipe || !!recipeId}
-          onClick={async () => {
-            if (!recipe) return;
-
-            await addRecipe(recipe);
-          }}
-        />
-        <Button type="reset" label="Cancel" />
-      </Box>
+      <Fields
+        addRecipe={addRecipe}
+        handleAddIngredient={handleAddIngredient}
+        handleIngredientChange={handleIngredientChange}
+        handleIngredientDelete={handleIngredientDelete}
+        handleNameChange={handleNameChange}
+        recipeId={recipeId}
+        recipe={recipe}
+        updateRecipe={updateRecipe}
+      />
     </CenteredMain>
   );
 };

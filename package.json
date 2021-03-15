@@ -16,6 +16,7 @@
     "stylelint": "stylelint --config ./stylelint.config.js \"./**/*.(ts|tsx)\"",
     "lint": "yarn eslint",
     "format": "prettier --write \"**/*.{js,ts,tsx}\" --ignore-path .gitignore",
+    "test": "yarn lint && yarn tsc && yarn jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages",

@@ -42,7 +42,7 @@ type UpdateRecipeInput = RecipeInput & {
   ingredients: IngredientInput[];
 };
 
-type UseRecipe = (
+export type UseRecipe = (
   ids?: Recipe["id"][]
 ) => {
   data: Recipe[];

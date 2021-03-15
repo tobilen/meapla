@@ -3,7 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { fireEvent } from "@testing-library/dom";
 import { nanoid } from "nanoid";
 import { wrapProviders } from "../../setup/wrapProviders";
-import { mockAddRecipe } from "../../queries/recipe.mock";
+import {
+  mockAddRecipe,
+  mockGetRecipes,
+  mockUpdateRecipe,
+} from "../../queries/recipe.mock";
 import { Measurement, Recipe } from "../../typings/graphql";
 import { RecipeForm } from "./index";
 
@@ -13,7 +17,10 @@ jest.mock("nanoid", () => ({
 
 describe("ReceipeForm", () => {
   it("disables add ingredient button if no ingredient name is given", () => {
-    render(<RecipeForm />, wrapProviders({ apollo: [], grommet: true }));
+    render(
+      <RecipeForm id={null} />,
+      wrapProviders({ apollo: [], grommet: true })
+    );
 
     expect(screen.getByTitle("Add new ingredient")).toBeDisabled();
 
@@ -29,7 +36,7 @@ describe("ReceipeForm", () => {
 
   it("adds an ingredient", async () => {
     render(
-      <RecipeForm />,
+      <RecipeForm id={null} />,
       wrapProviders({
         apollo: [],
         grommet: true,
@@ -51,7 +58,7 @@ describe("ReceipeForm", () => {
 
   it("deletes an ingredient", async () => {
     render(
-      <RecipeForm />,
+      <RecipeForm id={null} />,
       wrapProviders({
         apollo: [],
         grommet: true,
@@ -75,7 +82,7 @@ describe("ReceipeForm", () => {
 
   it("updates an ingredient", async () => {
     render(
-      <RecipeForm />,
+      <RecipeForm id={null} />,
       wrapProviders({
         apollo: [],
         grommet: true,
@@ -97,7 +104,7 @@ describe("ReceipeForm", () => {
     await waitFor(() => expect(screen.getByLabelText("Amount")).toHaveValue(7));
   });
 
-  it("saves a recipe", async () => {
+  it("creates a recipe", async () => {
     const mockedRecipe: Recipe = {
       id: 1,
       name: "My Recipe",
@@ -112,14 +119,14 @@ describe("ReceipeForm", () => {
     };
 
     render(
-      <RecipeForm />,
+      <RecipeForm id={null} />,
       wrapProviders({
         apollo: [mockAddRecipe(mockedRecipe)],
         grommet: true,
       })
     );
 
-    userEvent.type(screen.getByLabelText("Name"), "My Recipe");
+    userEvent.type(screen.getByLabelText("Recipe name"), "My Recipe");
 
     userEvent.type(
       screen.getByLabelText("Enter new ingredient name"),
@@ -135,8 +142,76 @@ describe("ReceipeForm", () => {
       target: { value: 7 },
     });
 
-    userEvent.click(screen.getByText("Save"));
+    userEvent.click(screen.getByText("Create"));
 
     expect(await screen.findByText("Saved successfully!")).toBeInTheDocument();
+  });
+
+  it("updates a recipe", async () => {
+    const mockedRecipe: Recipe = {
+      id: 1,
+      name: "My Recipe",
+      ingredients: [
+        {
+          id: "1",
+          name: "Butter",
+          amount: 7,
+          measurement: Measurement.Gramm,
+        },
+      ],
+    };
+
+    render(
+      <RecipeForm id={1} />,
+      wrapProviders({
+        apollo: [
+          mockGetRecipes({
+            recipes: [mockedRecipe],
+            filter: {
+              ids: [1],
+            },
+          }),
+          mockUpdateRecipe({
+            ...mockedRecipe,
+            name: "My improved Recipe",
+            ingredients: [
+              ...mockedRecipe.ingredients,
+              {
+                id: "2",
+                name: "Olivenöl",
+                amount: 2,
+                measurement: Measurement.Gramm,
+              },
+            ],
+          }),
+        ],
+        grommet: true,
+      })
+    );
+
+    await screen.findByDisplayValue("My Recipe");
+
+    userEvent.clear(screen.getByLabelText("Recipe name"));
+    userEvent.type(screen.getByLabelText("Recipe name"), "My improved Recipe");
+
+    userEvent.type(
+      screen.getByLabelText("Enter new ingredient name"),
+      "Olivenöl"
+    );
+
+    (nanoid as jest.Mock).mockReturnValueOnce("2");
+    userEvent.click(screen.getByTitle("Add new ingredient"));
+
+    expect(await screen.findByText("Ingredient 2")).toBeInTheDocument();
+
+    fireEvent.change(screen.getAllByLabelText("Amount")[1], {
+      target: { value: 2 },
+    });
+
+    userEvent.click(screen.getByText("Update"));
+
+    expect(
+      await screen.findByText("Updated successfully!")
+    ).toBeInTheDocument();
   });
 });
