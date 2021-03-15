@@ -1,12 +1,13 @@
 import { MockedResponse } from "@apollo/client/testing";
 import {
-  Recipe,
+  Measurement,
   Mutation,
   MutationAddRecipeArgs,
   MutationDeleteRecipeArgs,
   MutationUpdateRecipeArgs,
   Query,
   QueryGetRecipeArgs,
+  Recipe,
 } from "../typings/graphql";
 import {
   ADD_RECIPE_MUTATION,
@@ -15,29 +16,119 @@ import {
   UPDATE_RECIPE_MUTATION,
 } from "./recipe";
 
-export const mockGetRecipe: (
-  recipe: Recipe
-) => MockedResponse<{
-  getRecipe: Query["getRecipe"];
-}> = (recipe) => {
-  const variables: QueryGetRecipeArgs = {
-    filter: { ids: [recipe.id] },
-  };
+const defaultRecipes: Recipe[] = [
+  {
+    id: 1,
+    name: "Bowl of Cereal",
+    ingredients: [
+      {
+        id: "1",
+        name: "Milk",
+        amount: 200,
+        measurement: Measurement.Milliliters,
+        __typename: "Ingredient",
+      },
+      {
+        id: "2",
+        name: "Cereal",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+  {
+    id: 2,
+    name: "Caesar Salat",
+    ingredients: [
+      {
+        id: "3",
+        name: "Baguette",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "4",
+        name: "Olivenöl",
+        amount: 4,
+        measurement: Measurement.Teaspoon,
+        __typename: "Ingredient",
+      },
+      {
+        id: "5",
+        name: "Römersalat",
+        amount: 400,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+  {
+    id: 3,
+    name: "Brokkolisalat",
+    ingredients: [
+      {
+        id: "6",
+        name: "Brokkoli",
+        amount: 1000,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "7",
+        name: "Olivenöl",
+        amount: 4,
+        measurement: Measurement.Teaspoon,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+  {
+    id: 4,
+    name: "Lasagne Bolognese",
+    ingredients: [
+      {
+        id: "8",
+        name: "Mehl",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "9",
+        name: "Tomaten",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+];
 
-  return {
-    request: {
-      query: GET_RECIPE_QUERY,
-      variables,
-    },
-    result: {
-      data: {
-        getRecipe: {
-          recipes: [recipe],
-        },
+export const mockGetRecipes: (input?: {
+  recipes?: Recipe[];
+  filter?: QueryGetRecipeArgs["filter"];
+}) => MockedResponse<{
+  getRecipe: Query["getRecipe"];
+}> = ({ recipes, filter } = {}) => ({
+  request: {
+    query: GET_RECIPE_QUERY,
+    variables: filter ? { filter } : undefined,
+  },
+  result: {
+    data: {
+      getRecipe: {
+        __typename: "RecipeOutput",
+        recipes: recipes || defaultRecipes,
       },
     },
-  };
-};
+  },
+});
 
 export const mockAddRecipe: (
   recipe: Recipe

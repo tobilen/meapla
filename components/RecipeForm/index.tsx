@@ -5,7 +5,6 @@ import {
   FormField,
   Grid,
   Heading,
-  Main,
   TextArea,
   TextInput,
 } from "grommet";
@@ -19,6 +18,7 @@ import {
   Recipe,
   RecipeInput,
 } from "../../typings/graphql";
+import { CenteredMain } from "../Page/styles";
 
 export const RecipeForm: React.FC = () => {
   const [recipeId, setRecipeId] = React.useState<Recipe["id"]>();
@@ -92,7 +92,7 @@ export const RecipeForm: React.FC = () => {
   }, [newIngredientName, recipe]);
 
   return (
-    <Main>
+    <CenteredMain width="large">
       {recipeId && status === "success" ? "Saved successfully!" : null}
       {status === "error"
         ? `Could not fetch recipe from server! Error: ${error}`
@@ -181,6 +181,6 @@ export const RecipeForm: React.FC = () => {
         />
         <Button type="reset" label="Cancel" />
       </Box>
-    </Main>
+    </CenteredMain>
   );
 };

@@ -10,7 +10,7 @@ export const Page: React.FC = ({ children }) => {
   return (
     <>
       <Navbar user={session?.user} />
-      <CenteredMain width="large">
+      <CenteredMain width="xxlarge">
         <Head>
           <title>meapla</title>
           <link rel="icon" href="/favicon.ico" />
