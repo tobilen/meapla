@@ -6096,6 +6096,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"big-integer@npm:^1.6.48":
+  version: 1.6.48
+  resolution: "big-integer@npm:1.6.48"
+  checksum: 311f86a45e28513ddb12415082c5f437b868d80914bff71689a99e16f597beee5c0f12b0c9e65713b70b0516e6ed27f4006e256ea5393bfcf68bb18dc453f976
+  languageName: node
+  linkType: hard
+
 "big.js@npm:^5.2.2":
   version: 5.2.2
   resolution: "big.js@npm:5.2.2"
@@ -13616,6 +13623,7 @@ fsevents@^1.2.7:
     pg: ^8.5.1
     prettier: ^2.2.1
     pretty-format: ^26.6.2
+    proposal-temporal: ^0.7.0
     react: 17.0.1
     react-dom: 17.0.1
     react-is: ^17.0.1
@@ -15871,6 +15879,16 @@ fsevents@^1.2.7:
   dependencies:
     xtend: ^4.0.0
   checksum: d06969645665a2d1b4d701b90970ec3bbab123d55581ab5612e33cb4b5cd134522ed21fe1eb339440561249269f47f3896fb345d9c9c67e24ba69a764b14aaf7
+  languageName: node
+  linkType: hard
+
+"proposal-temporal@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "proposal-temporal@npm:0.7.0"
+  dependencies:
+    big-integer: ^1.6.48
+    es-abstract: ^1.18.0-next.1
+  checksum: d36e44ed8de911d7e218920ea0e3b39597b8bc9c3110ae6fe24502f10bb05cbe5383b18c64232cc28382edc2004ded21b3801cabc7ac9918b2e3b45f28d0f5be
   languageName: node
   linkType: hard
 

@@ -19,7 +19,7 @@ type MenuItem = {
 const navigationMenu: MenuItem[] = [
   {
     label: "Recipes",
-    href: "/",
+    href: "/recipes",
     requireAuth: true,
   },
   {

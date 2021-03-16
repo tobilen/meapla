@@ -1,6 +1,9 @@
 import { NextComponentType } from "next";
-import { RecipeList } from "../components/RecipeList";
+import { Temporal } from "proposal-temporal";
+import { Calendar } from "../components/Calendar";
 
-const Index: NextComponentType = RecipeList;
+const Index: NextComponentType = () => (
+  <Calendar refDate={Temporal.now.plainDateISO()} />
+);
 
 export default Index;
