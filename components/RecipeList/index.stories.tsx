@@ -9,3 +9,4 @@ export default {
 };
 
 export const Default: Story = () => <RecipeList />;
+export const Selectable: Story = () => <RecipeList selectable />;

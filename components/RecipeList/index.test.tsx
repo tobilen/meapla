@@ -9,30 +9,47 @@ jest.mock("nanoid", () => ({
   nanoid: jest.fn(),
 }));
 
-describe("ReceipeList", () => {
-  it("deletes a recipe if delete button is clicked", async () => {
-    const recipe: Recipe = {
-      id: 1,
-      name: "Bowl of Cereal",
-      ingredients: [
-        {
-          id: "1",
-          name: "Milk",
-          amount: 200,
-          measurement: Measurement.Milliliters,
-          __typename: "Ingredient",
-        },
-        {
-          id: "2",
-          name: "Cereal",
-          amount: 200,
-          measurement: Measurement.Gramm,
-          __typename: "Ingredient",
-        },
-      ],
-      __typename: "Recipe",
-    };
+const recipe: Recipe = {
+  id: 1,
+  name: "Bowl of Cereal",
+  ingredients: [
+    {
+      id: "1",
+      name: "Milk",
+      amount: 200,
+      measurement: Measurement.Milliliters,
+    },
+    {
+      id: "2",
+      name: "Cereal",
+      amount: 200,
+      measurement: Measurement.Gramm,
+    },
+  ],
+};
 
+describe("ReceipeList", () => {
+  it("invokes callback when a recipe is clicked", async () => {
+    const onRecipeSelect = jest.fn();
+
+    render(
+      <RecipeList selectable onRecipeSelect={onRecipeSelect} />,
+      wrapProviders({
+        apollo: [mockGetRecipes({ recipes: [recipe] })],
+        grommet: true,
+      })
+    );
+
+    userEvent.click(await screen.findByText("Bowl of Cereal"));
+
+    expect(onRecipeSelect).toBeCalledWith([recipe]);
+
+    userEvent.click(await screen.findByText("Bowl of Cereal"));
+
+    expect(onRecipeSelect).toBeCalledWith([]);
+  });
+
+  it("deletes a recipe if delete button is clicked", async () => {
     render(
       <RecipeList />,
       wrapProviders({
