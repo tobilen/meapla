@@ -55,12 +55,18 @@ export const RecipeList: React.FC<Props> = ({
           background="light-1"
           border={selectable && isSelected(recipe)}
         >
-          <CardHeader pad="medium" onClick={() => handleRecipeClick(recipe)}>
+          <CardHeader
+            pad="medium"
+            onClick={selectable ? () => handleRecipeClick(recipe) : undefined}
+          >
             <Text size="large" weight="bold">
               {recipe.name}
             </Text>
           </CardHeader>
-          <CardBody pad="medium" onClick={() => handleRecipeClick(recipe)}>
+          <CardBody
+            pad="medium"
+            onClick={selectable ? () => handleRecipeClick(recipe) : undefined}
+          >
             Body
           </CardBody>
           <CardFooter pad={{ horizontal: "small" }} background="light-2">
