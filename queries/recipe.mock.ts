@@ -108,6 +108,90 @@ const defaultRecipes: Recipe[] = [
     ],
     __typename: "Recipe",
   },
+  {
+    id: 5,
+    name: "Spinatstrudel mit Kartoffeln",
+    ingredients: [
+      {
+        id: "10",
+        name: "Spinat",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "11",
+        name: "Kartoffel",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+  {
+    id: 6,
+    name: "Paprikahuhn",
+    ingredients: [
+      {
+        id: "12",
+        name: "Paprika",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "13",
+        name: "Huhn",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+  {
+    id: 7,
+    name: "Bärlauchsuppe",
+    ingredients: [
+      {
+        id: "14",
+        name: "Bärlauch",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "15",
+        name: "Suppenwürfel",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
+  {
+    id: 8,
+    name: "Thunfisch-Pizza",
+    ingredients: [
+      {
+        id: "16",
+        name: "Mehl",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+      {
+        id: "17",
+        name: "Thunfisch",
+        amount: 200,
+        measurement: Measurement.Gramm,
+        __typename: "Ingredient",
+      },
+    ],
+    __typename: "Recipe",
+  },
 ];
 
 export const mockGetRecipes: (input?: {
