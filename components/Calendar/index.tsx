@@ -3,7 +3,6 @@ import {
   Text,
   Box,
   Calendar as GrommetCalendar,
-  Image,
   Stack,
   Main,
   Card,
@@ -15,6 +14,7 @@ import {
 import { Temporal } from "proposal-temporal";
 import { normalizeColor } from "grommet/utils";
 import styled from "styled-components";
+import { usePlan } from "../../hooks/usePlan";
 
 export type Props = {
   refDate: Temporal.PlainDate;
@@ -38,14 +38,31 @@ const DisableBox = styled(Box)<{ disabled: boolean }>`
   opacity: ${({ disabled }) => (disabled ? "0.35" : "")};
 `;
 
-export const Calendar: React.FC<Props> = ({ refDate }) => {
+export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
+  const theme = React.useContext(ThemeContext);
+  const brandColor = normalizeColor("brand", theme);
+  const darkColor = normalizeColor("dark-1", theme);
+
+  const [reference, setReference] = React.useState<Temporal.PlainDate>(
+    referenceProp
+  );
   const [
     selectedDay,
     setSelectedDay,
   ] = React.useState<Temporal.PlainDate | null>(null);
-  const theme = React.useContext(ThemeContext);
-  const brandColor = normalizeColor("brand", theme);
-  const darkColor = normalizeColor("dark-1", theme);
+
+  React.useEffect(() => {
+    setReference(referenceProp);
+  }, [referenceProp]);
+
+  const { data, status, error } = usePlan({
+    daterange: {
+      from: `${reference.subtract({ months: 1 })}`,
+      to: `${reference.add({ months: 2 })}`,
+    },
+  });
+
+  if (status === "error") return <>Error fetching plans: {`${error}`}</>;
 
   return (
     <Main pad="large">
@@ -57,9 +74,13 @@ export const Calendar: React.FC<Props> = ({ refDate }) => {
       />
       <GrommetCalendar
         fill
-        reference={`${refDate}`}
+        reference={`${reference}`}
         daysOfWeek
         firstDayOfWeek={1}
+        onReference={(date) => {
+          const newReference = Temporal.PlainDate.from(date);
+          setReference(newReference.subtract({ days: newReference.day - 1 }));
+        }}
       >
         {({ date, day }) => {
           const currentDate = Temporal.PlainDate.from({
@@ -68,11 +89,16 @@ export const Calendar: React.FC<Props> = ({ refDate }) => {
             year: date.getFullYear(),
           });
           const disabled =
-            currentDate.until(refDate).total({ unit: "days" }) >= 1;
+            currentDate.until(referenceProp).total({ unit: "days" }) >= 1;
 
           const isSelectedWeek =
             selectedDay?.weekOfYear === currentDate.weekOfYear;
-          const isCurrentWeek = refDate?.weekOfYear === currentDate.weekOfYear;
+          const isCurrentWeek =
+            referenceProp?.weekOfYear === currentDate.weekOfYear;
+
+          const plan = data.find(
+            (currentPlan) => currentPlan.date === `${currentDate}`
+          );
 
           return (
             <DisableBox key={date} pad="xsmall" disabled={disabled}>
@@ -92,7 +118,10 @@ export const Calendar: React.FC<Props> = ({ refDate }) => {
               >
                 <Stack anchor="top-right">
                   <CardBody height="small">
-                    <Image fit="cover" a11yTitle="scuba diving" />
+                    <br />
+                    <br />
+                    <br />
+                    {status === "loading" ? "loading..." : plan?.recipe?.name}
                   </CardBody>
                   <CardHeader
                     pad={{ horizontal: "small" }}

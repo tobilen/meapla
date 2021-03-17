@@ -16,7 +16,7 @@ import {
   UPDATE_RECIPE_MUTATION,
 } from "./recipe";
 
-const defaultRecipes: Recipe[] = [
+export const defaultRecipes: Recipe[] = [
   {
     id: 1,
     name: "Bowl of Cereal",
