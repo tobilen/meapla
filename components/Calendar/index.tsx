@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { usePlan } from "../../hooks/usePlan";
 
 export type Props = {
-  refDate: Temporal.PlainDate;
+  refDate: Temporal.ZonedDateTime;
 };
 
 const getDayColor = ({
@@ -43,13 +43,13 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
   const brandColor = normalizeColor("brand", theme);
   const darkColor = normalizeColor("dark-1", theme);
 
-  const [reference, setReference] = React.useState<Temporal.PlainDate>(
+  const [reference, setReference] = React.useState<Temporal.ZonedDateTime>(
     referenceProp
   );
   const [
     selectedDay,
     setSelectedDay,
-  ] = React.useState<Temporal.PlainDate | null>(null);
+  ] = React.useState<Temporal.PlainDateTime | null>(null);
 
   React.useEffect(() => {
     setReference(referenceProp);
@@ -57,8 +57,8 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
 
   const { data, status, error } = usePlan({
     daterange: {
-      from: `${reference.subtract({ months: 1 })}`,
-      to: `${reference.add({ months: 2 })}`,
+      from: `${reference.subtract({ months: 1 }).toInstant()}`,
+      to: `${reference.add({ months: 2 }).toInstant()}`,
     },
   });
 
@@ -74,16 +74,18 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
       />
       <GrommetCalendar
         fill
-        reference={`${reference}`}
+        reference={`${reference.toInstant()}`}
         daysOfWeek
         firstDayOfWeek={1}
         onReference={(date) => {
-          const newReference = Temporal.PlainDate.from(date);
+          const newReference = Temporal.PlainDateTime.from(
+            date
+          ).toZonedDateTime("Etc/UTC");
           setReference(newReference.subtract({ days: newReference.day - 1 }));
         }}
       >
         {({ date, day }) => {
-          const currentDate = Temporal.PlainDate.from({
+          const currentDate = Temporal.PlainDateTime.from({
             day: date.getDate(),
             month: date.getMonth() + 1,
             year: date.getFullYear(),
@@ -96,8 +98,8 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
           const isCurrentWeek =
             referenceProp?.weekOfYear === currentDate.weekOfYear;
 
-          const plan = data.find(
-            (currentPlan) => currentPlan.date === `${currentDate}`
+          const plan = data.find((currentPlan) =>
+            currentDate.equals(currentPlan.date)
           );
 
           return (
@@ -121,7 +123,7 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
                     <br />
                     <br />
                     <br />
-                    {status === "loading" ? "loading..." : plan?.recipe?.name}
+                    {status === "loading" ? "loading..." : plan?.recipe.name}
                   </CardBody>
                   <CardHeader
                     pad={{ horizontal: "small" }}

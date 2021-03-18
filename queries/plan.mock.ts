@@ -20,10 +20,14 @@ export const mockGetPlans: (
 ) => MockedResponse<{
   getPlan: Query["getPlan"];
 }> = (daterange, plans) => {
-  const from = Temporal.PlainDate.from(daterange.from);
-  const to = Temporal.PlainDate.from(daterange.to);
+  const from = Temporal.PlainDateTime.from(daterange.from).toZonedDateTime(
+    "Etc/UTC"
+  );
+  const to = Temporal.PlainDateTime.from(daterange.to).toZonedDateTime(
+    "Etc/UTC"
+  );
 
-  const dates: Temporal.PlainDate[] = new Array(
+  const dates: Temporal.ZonedDateTime[] = new Array(
     from.until(to).total({ unit: "days" })
   )
     .fill(1)
@@ -42,8 +46,8 @@ export const mockGetPlans: (
             plans ||
             dates.map((day, index) => ({
               __typename: "Plan",
-              id: Temporal.Instant.from(`${day}T00:00Z`).epochSeconds,
-              date: `${day}`,
+              id: day.toInstant().epochSeconds,
+              date: `${day.toInstant()}`,
               recipe: defaultRecipes[index % defaultRecipes.length],
             })),
         },

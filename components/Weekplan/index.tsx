@@ -1,34 +1,75 @@
 import * as React from "react";
+import { useRouter } from "next/router";
 import { Button, Main, Text } from "grommet";
 import { Temporal } from "proposal-temporal";
 import { RecipeList } from "../RecipeList";
 import { Recipe } from "../../typings/graphql";
+import { usePlan } from "../../hooks/usePlan";
 
 export type Props = {
-  days: [
-    Temporal.PlainDate,
-    Temporal.PlainDate,
-    Temporal.PlainDate,
-    Temporal.PlainDate,
-    Temporal.PlainDate,
-    Temporal.PlainDate,
-    Temporal.PlainDate
-  ];
+  from: Temporal.ZonedDateTime;
+  to: Temporal.ZonedDateTime;
 };
 
-export const Weekplan: React.FC<Props> = () => {
+export const Weekplan: React.FC<Props> = ({ from, to }) => {
+  const { push } = useRouter();
+  const {
+    data,
+    status,
+    addPlan: { mutate: addPlan, status: addPlanStatus },
+    deletePlan: { mutate: deletePlan, status: deletePlanStatus },
+  } = usePlan({
+    daterange: { from: `${from.toInstant()}`, to: `${to.toInstant()}` },
+  });
   const [selectedRecipes, setSelectedRecipes] = React.useState<Recipe[]>([]);
+
+  React.useEffect(() => {
+    if (addPlanStatus === "success")
+      push("/").catch((e) => {
+        throw e;
+      });
+  }, [push, addPlanStatus]);
+
+  React.useEffect(() => {
+    if (data.length < 1) return;
+    setSelectedRecipes(data.map((plan) => plan.recipe));
+  }, [data]);
+
+  const handleWeekplanSave = React.useCallback(async () => {
+    await deletePlan({
+      daterange: { from: `${from.toInstant()}`, to: `${to.toInstant()}` },
+    });
+    await addPlan(
+      selectedRecipes.map((selectedRecipe, days) => ({
+        date: `${from.add({ days }).toInstant()}`,
+        recipeId: selectedRecipe.id,
+      }))
+    );
+  }, [addPlan, deletePlan, from, selectedRecipes, to]);
+
+  if (status === "loading") return <>loading...</>;
+
   return (
     <Main pad="large">
       <Text color={selectedRecipes.length > 7 ? "status-error" : undefined}>
         Selected {selectedRecipes.length} / 7 Recipes
       </Text>
-      <Button
-        label="Save"
-        disabled={selectedRecipes.length < 1 || selectedRecipes.length > 7}
-        primary
+      {addPlanStatus === "loading" || deletePlanStatus === "loading" ? (
+        <>loading...</>
+      ) : (
+        <Button
+          label="Save"
+          title="Save"
+          disabled={selectedRecipes.length < 1 || selectedRecipes.length > 7}
+          onClick={handleWeekplanSave}
+          primary
+        />
+      )}
+      <RecipeList
+        selectable
+        selectedRecipes={selectedRecipes}
+        onRecipeSelect={setSelectedRecipes}
       />
-      <RecipeList selectable onRecipeSelect={setSelectedRecipes} />
     </Main>
   );
 };

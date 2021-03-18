@@ -3,7 +3,7 @@ import { Temporal } from "proposal-temporal";
 import { Calendar } from "../components/Calendar";
 
 const Index: NextComponentType = () => (
-  <Calendar refDate={Temporal.now.plainDateISO()} />
+  <Calendar refDate={Temporal.now.zonedDateTimeISO()} />
 );
 
 export default Index;

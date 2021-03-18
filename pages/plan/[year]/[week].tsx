@@ -1,7 +1,7 @@
 import { NextComponentType } from "next";
 import { useRouter } from "next/router";
 import { Temporal } from "proposal-temporal";
-import { Props, Weekplan } from "../../../components/Weekplan";
+import { Weekplan } from "../../../components/Weekplan";
 
 const parseParameter = (
   param: string | string[] | undefined
@@ -11,26 +11,6 @@ const parseParameter = (
   return parseInt(param, 10);
 };
 
-const getWeekDates = (week: number, year: number): Props["days"] => {
-  const d = Temporal.PlainDate.from({
-    year,
-    month: 1,
-    day: 1,
-  }).add({ weeks: week });
-
-  const startOfWeek = d.subtract({ days: d.dayOfWeek - 1 });
-
-  return [
-    startOfWeek,
-    startOfWeek.add({ days: 1 }),
-    startOfWeek.add({ days: 2 }),
-    startOfWeek.add({ days: 3 }),
-    startOfWeek.add({ days: 4 }),
-    startOfWeek.add({ days: 5 }),
-    startOfWeek.add({ days: 6 }),
-  ];
-};
-
 const CreatePlan: NextComponentType = () => {
   const router = useRouter();
 
@@ -38,12 +18,22 @@ const CreatePlan: NextComponentType = () => {
   const week = parseParameter(router.query.week);
   if (!year || !week) throw new Error("Malformed Request");
 
+  const anchorDate = Temporal.ZonedDateTime.from({
+    year,
+    month: 1,
+    day: 1,
+    timeZone: "Etc/UTC",
+  }).add({ weeks: week });
+
+  const startOfWeek = anchorDate.subtract({ days: anchorDate.dayOfWeek - 1 });
+  const endOfWeek = startOfWeek.add({ days: 6 });
+
   return (
     <>
       <div>
         Plan for year {year} / {week}
       </div>
-      <Weekplan days={getWeekDates(week, year)} />
+      <Weekplan from={startOfWeek} to={endOfWeek} />
     </>
   );
 };
