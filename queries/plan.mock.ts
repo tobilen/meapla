@@ -1,7 +1,13 @@
 import { MockedResponse } from "@apollo/client/testing";
 import { Temporal } from "proposal-temporal";
-import { DateRange, Query } from "../typings/graphql";
-import { GET_PLAN_QUERY } from "./plan";
+import {
+  DateRange,
+  Mutation,
+  MutationAddPlanArgs,
+  Plan,
+  Query,
+} from "../typings/graphql";
+import { ADD_PLAN_MUTATION, GET_PLAN_QUERY } from "./plan";
 import { defaultRecipes } from "./recipe.mock";
 
 export const mockGetPlans: (
@@ -33,6 +39,38 @@ export const mockGetPlans: (
             date: `${day}`,
             recipe: defaultRecipes[index % defaultRecipes.length],
           })),
+        },
+      },
+    },
+  };
+};
+
+export const mockAddPlan: (
+  plans: Plan[]
+) => MockedResponse<{
+  addPlan: Mutation["addPlan"];
+}> = (plans) => {
+  const variables: MutationAddPlanArgs = {
+    input: plans.map((plan) => {
+      if (!plan.recipe)
+        throw new Error("Plan provided in mock needs to have a recipe");
+
+      return {
+        date: plan.date,
+        recipeId: plan.recipe.id,
+      };
+    }),
+  };
+
+  return {
+    request: {
+      query: ADD_PLAN_MUTATION,
+      variables,
+    },
+    result: {
+      data: {
+        addPlan: {
+          plans,
         },
       },
     },

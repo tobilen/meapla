@@ -14,3 +14,18 @@ export const GET_PLAN_QUERY = gql`
     }
   }
 `;
+
+export const ADD_PLAN_MUTATION = gql`
+  mutation addPlan($input: [PlanInput!]!) {
+    addPlan(input: $input) {
+      plans {
+        id
+        date
+        recipe {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

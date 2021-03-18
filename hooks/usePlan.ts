@@ -1,13 +1,28 @@
+import * as React from "react";
 import {
   ApolloError,
+  FetchResult,
   MutationResult,
   ObservableQuery,
+  useMutation,
   useQuery,
 } from "@apollo/client";
-import { Plan, PlanFilter, Query, QueryGetPlanArgs } from "../typings/graphql";
-import { GET_PLAN_QUERY } from "../queries/plan";
+import {
+  Mutation,
+  MutationAddPlanArgs,
+  Plan,
+  PlanFilter,
+  PlanInput,
+  Query,
+  QueryGetPlanArgs,
+} from "../typings/graphql";
+import { ADD_PLAN_MUTATION, GET_PLAN_QUERY } from "../queries/plan";
 
 type MutationStatus = "idle" | "loading" | "error" | "success";
+
+type AddPlanData = {
+  addPlan: Mutation["addPlan"];
+};
 
 export type UsePlan = (
   filter: PlanFilter
@@ -19,6 +34,10 @@ export type UsePlan = (
     { getPlan: Query["getPlan"] },
     QueryGetPlanArgs
   >["refetch"];
+  addPlan: {
+    mutate: (plan: PlanInput) => Promise<FetchResult<AddPlanData>>;
+    status: MutationStatus;
+  } & MutationResult<AddPlanData>;
 };
 
 const getStatus = (result: MutationResult): MutationStatus => {
@@ -34,10 +53,30 @@ export const usePlan: UsePlan = (filter) => {
     { variables: { filter } }
   );
 
+  const [requestAddPlan, addPlanResult] = useMutation<
+    AddPlanData,
+    MutationAddPlanArgs
+  >(ADD_PLAN_MUTATION);
+
+  const addPlan = React.useCallback(
+    (plan: PlanInput) =>
+      requestAddPlan({
+        variables: {
+          input: [plan],
+        },
+      }),
+    [requestAddPlan]
+  );
+
   return {
     data: result.data?.getPlan?.plans || [],
     status: getStatus(result),
     error: result.error,
     refetch: result.refetch,
+    addPlan: {
+      mutate: addPlan,
+      ...addPlanResult,
+      status: getStatus(addPlanResult),
+    },
   };
 };
