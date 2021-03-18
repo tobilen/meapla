@@ -10,18 +10,26 @@ import {
 import {
   Mutation,
   MutationAddPlanArgs,
+  MutationDeletePlanArgs,
   Plan,
   PlanFilter,
   PlanInput,
   Query,
   QueryGetPlanArgs,
 } from "../typings/graphql";
-import { ADD_PLAN_MUTATION, GET_PLAN_QUERY } from "../queries/plan";
+import {
+  ADD_PLAN_MUTATION,
+  DELETE_PLAN_MUTATION,
+  GET_PLAN_QUERY,
+} from "../queries/plan";
 
 type MutationStatus = "idle" | "loading" | "error" | "success";
 
 type AddPlanData = {
   addPlan: Mutation["addPlan"];
+};
+type DeletePlanData = {
+  deletePlan: Mutation["deletePlan"];
 };
 
 export type UsePlan = (
@@ -35,9 +43,15 @@ export type UsePlan = (
     QueryGetPlanArgs
   >["refetch"];
   addPlan: {
-    mutate: (plan: PlanInput) => Promise<FetchResult<AddPlanData>>;
+    mutate: (plans: PlanInput[]) => Promise<FetchResult<AddPlanData>>;
     status: MutationStatus;
   } & MutationResult<AddPlanData>;
+  deletePlan: {
+    mutate: (
+      deletionFilter: PlanFilter
+    ) => Promise<FetchResult<DeletePlanData>>;
+    status: MutationStatus;
+  } & MutationResult<DeletePlanData>;
 };
 
 const getStatus = (result: MutationResult): MutationStatus => {
@@ -57,15 +71,27 @@ export const usePlan: UsePlan = (filter) => {
     AddPlanData,
     MutationAddPlanArgs
   >(ADD_PLAN_MUTATION);
+  const [requestDeletePlan, deletePlanResult] = useMutation<
+    DeletePlanData,
+    MutationDeletePlanArgs
+  >(DELETE_PLAN_MUTATION);
 
   const addPlan = React.useCallback(
-    (plan: PlanInput) =>
+    (plans: PlanInput[]) =>
       requestAddPlan({
         variables: {
-          input: [plan],
+          input: plans,
         },
       }),
     [requestAddPlan]
+  );
+
+  const deletePlan = React.useCallback(
+    async (deletionFilter: PlanFilter) =>
+      requestDeletePlan({
+        variables: { filter: deletionFilter },
+      }),
+    [requestDeletePlan]
   );
 
   return {
@@ -77,6 +103,11 @@ export const usePlan: UsePlan = (filter) => {
       mutate: addPlan,
       ...addPlanResult,
       status: getStatus(addPlanResult),
+    },
+    deletePlan: {
+      mutate: deletePlan,
+      ...deletePlanResult,
+      status: getStatus(deletePlanResult),
     },
   };
 };

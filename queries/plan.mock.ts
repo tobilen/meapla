@@ -7,7 +7,11 @@ import {
   Plan,
   Query,
 } from "../typings/graphql";
-import { ADD_PLAN_MUTATION, GET_PLAN_QUERY } from "./plan";
+import {
+  ADD_PLAN_MUTATION,
+  DELETE_PLAN_MUTATION,
+  GET_PLAN_QUERY,
+} from "./plan";
 import { defaultRecipes } from "./recipe.mock";
 
 export const mockGetPlans: (
@@ -76,3 +80,22 @@ export const mockAddPlan: (
     },
   };
 };
+
+export const mockDeletePlan: (
+  daterange: DateRange,
+  plans: Plan[]
+) => MockedResponse<{
+  deletePlan: Mutation["deletePlan"];
+}> = (daterange, plans) => ({
+  request: {
+    query: DELETE_PLAN_MUTATION,
+    variables: { filter: { daterange } },
+  },
+  result: {
+    data: {
+      deletePlan: {
+        plans,
+      },
+    },
+  },
+});

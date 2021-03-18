@@ -29,3 +29,18 @@ export const ADD_PLAN_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_PLAN_MUTATION = gql`
+  mutation deletePlan($filter: PlanFilter!) {
+    deletePlan(filter: $filter) {
+      plans {
+        id
+        date
+        recipe {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
