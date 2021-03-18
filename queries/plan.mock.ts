@@ -5,7 +5,7 @@ import { GET_PLAN_QUERY } from "./plan";
 import { defaultRecipes } from "./recipe.mock";
 
 export const mockGetPlans: (
-  range: DateRange
+  daterange: DateRange
 ) => MockedResponse<{
   getPlan: Query["getPlan"];
 }> = (daterange) => {
@@ -29,7 +29,7 @@ export const mockGetPlans: (
           __typename: "PlanOutput",
           plans: dates.map((day, index) => ({
             __typename: "Plan",
-            id: index,
+            id: Temporal.Instant.from(`${day}T00:00Z`).epochSeconds,
             date: `${day}`,
             recipe: defaultRecipes[index % defaultRecipes.length],
           })),
