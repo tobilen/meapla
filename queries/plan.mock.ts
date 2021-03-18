@@ -15,10 +15,11 @@ import {
 import { defaultRecipes } from "./recipe.mock";
 
 export const mockGetPlans: (
-  daterange: DateRange
+  daterange: DateRange,
+  plans?: Plan[]
 ) => MockedResponse<{
   getPlan: Query["getPlan"];
-}> = (daterange) => {
+}> = (daterange, plans) => {
   const from = Temporal.PlainDate.from(daterange.from);
   const to = Temporal.PlainDate.from(daterange.to);
 
@@ -37,12 +38,14 @@ export const mockGetPlans: (
       data: {
         getPlan: {
           __typename: "PlanOutput",
-          plans: dates.map((day, index) => ({
-            __typename: "Plan",
-            id: Temporal.Instant.from(`${day}T00:00Z`).epochSeconds,
-            date: `${day}`,
-            recipe: defaultRecipes[index % defaultRecipes.length],
-          })),
+          plans:
+            plans ||
+            dates.map((day, index) => ({
+              __typename: "Plan",
+              id: Temporal.Instant.from(`${day}T00:00Z`).epochSeconds,
+              date: `${day}`,
+              recipe: defaultRecipes[index % defaultRecipes.length],
+            })),
         },
       },
     },

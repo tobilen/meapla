@@ -9,6 +9,12 @@ export const GET_PLAN_QUERY = gql`
         recipe {
           id
           name
+          ingredients {
+            id
+            name
+            amount
+            measurement
+          }
         }
       }
     }
