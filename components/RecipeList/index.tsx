@@ -6,19 +6,22 @@ import { AdminButton, EditIcon, TrashIcon } from "./styles";
 
 export type Props = {
   selectable?: boolean;
+  selectedRecipes?: Recipe[];
   onRecipeSelect?: (recipes: Recipe[]) => void;
 };
 
 export const RecipeList: React.FC<Props> = ({
   selectable,
+  selectedRecipes: selectedRecipesProp,
   onRecipeSelect = () => {},
 }) => {
   const { data, status, refetch, deleteRecipe } = useRecipe();
   const [selectedRecipes, setSelectedRecipes] = React.useState<Recipe[]>([]);
 
   React.useEffect(() => {
-    onRecipeSelect(selectedRecipes);
-  }, [onRecipeSelect, selectedRecipes]);
+    if (!selectedRecipesProp) return;
+    setSelectedRecipes(selectedRecipesProp);
+  }, [selectedRecipesProp]);
 
   const isSelected = React.useCallback(
     (recipe: Recipe) =>
@@ -28,15 +31,16 @@ export const RecipeList: React.FC<Props> = ({
 
   const handleRecipeClick = React.useCallback(
     (recipe: Recipe) => {
-      setSelectedRecipes(
-        isSelected(recipe)
-          ? selectedRecipes.filter(
-              (currentRecipe) => currentRecipe.id !== recipe.id
-            )
-          : [...selectedRecipes, recipe]
-      );
+      const newSelectedRecipes = isSelected(recipe)
+        ? selectedRecipes.filter(
+            (currentRecipe) => currentRecipe.id !== recipe.id
+          )
+        : [...selectedRecipes, recipe];
+
+      setSelectedRecipes(newSelectedRecipes);
+      onRecipeSelect(newSelectedRecipes);
     },
-    [isSelected, selectedRecipes]
+    [isSelected, onRecipeSelect, selectedRecipes]
   );
 
   if (!data || status === "loading") return <>loading recipes...</>;
@@ -53,6 +57,9 @@ export const RecipeList: React.FC<Props> = ({
           height="auto"
           width="auto"
           background="light-1"
+          role={selectable ? "checkbox" : undefined}
+          aria-label={`${recipe.name}`}
+          aria-checked={selectable && isSelected(recipe)}
           border={selectable && isSelected(recipe)}
         >
           <CardHeader

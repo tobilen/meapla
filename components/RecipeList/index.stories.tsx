@@ -1,6 +1,6 @@
 import { Story } from "@storybook/react";
 import { ApolloDecorator } from "../../.storybook/ApolloDecorator";
-import { mockGetRecipes } from "../../queries/recipe.mock";
+import { defaultRecipes, mockGetRecipes } from "../../queries/recipe.mock";
 import { RecipeList } from "./index";
 
 export default {
@@ -10,3 +10,9 @@ export default {
 
 export const Default: Story = () => <RecipeList />;
 export const Selectable: Story = () => <RecipeList selectable />;
+export const WithPreselectedElements: Story = () => (
+  <RecipeList
+    selectable
+    selectedRecipes={[defaultRecipes[0], defaultRecipes[4]]}
+  />
+);

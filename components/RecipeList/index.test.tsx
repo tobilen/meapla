@@ -41,12 +41,26 @@ describe("ReceipeList", () => {
     );
 
     userEvent.click(await screen.findByText("Bowl of Cereal"));
+    expect(screen.getByLabelText("Bowl of Cereal")).toBeChecked();
 
     expect(onRecipeSelect).toBeCalledWith([recipe]);
 
     userEvent.click(await screen.findByText("Bowl of Cereal"));
+    expect(screen.getByLabelText("Bowl of Cereal")).not.toBeChecked();
 
     expect(onRecipeSelect).toBeCalledWith([]);
+  });
+
+  it("takes preselection as prop", async () => {
+    render(
+      <RecipeList selectable selectedRecipes={[recipe]} />,
+      wrapProviders({
+        apollo: [mockGetRecipes({ recipes: [recipe] })],
+        grommet: true,
+      })
+    );
+
+    expect(await screen.findByLabelText("Bowl of Cereal")).toBeChecked();
   });
 
   it("deletes a recipe if delete button is clicked", async () => {
