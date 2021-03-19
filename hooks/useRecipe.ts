@@ -27,6 +27,9 @@ import {
 
 type MutationStatus = "idle" | "loading" | "error" | "success";
 
+type GetRecipeData = {
+  getRecipe: Query["getRecipe"];
+};
 type AddRecipeData = {
   addRecipe: Mutation["addRecipe"];
 };
@@ -48,10 +51,7 @@ export type UseRecipe = (
   data: Recipe[];
   error?: ApolloError;
   status: MutationStatus;
-  refetch: ObservableQuery<
-    { getRecipe: Query["getRecipe"] },
-    QueryGetRecipeArgs
-  >["refetch"];
+  refetch: ObservableQuery<GetRecipeData, QueryGetRecipeArgs>["refetch"];
   addRecipe: {
     mutate: (recipe: RecipeInput) => Promise<FetchResult<AddRecipeData>>;
     status: MutationStatus;
@@ -84,7 +84,30 @@ export const useRecipe: UseRecipe = (ids) => {
   const [requestAddRecipe, addRecipeResult] = useMutation<
     AddRecipeData,
     MutationAddRecipeArgs
-  >(ADD_RECIPE_MUTATION);
+  >(ADD_RECIPE_MUTATION, {
+    update: (cache, mutationResult) => {
+      if (!mutationResult.data) return;
+      const existingRecipes = cache.readQuery<GetRecipeData>({
+        query: GET_RECIPE_QUERY,
+      });
+
+      if (!existingRecipes) return;
+
+      cache.writeQuery({
+        query: GET_RECIPE_QUERY,
+        data: {
+          ...existingRecipes,
+          getRecipe: {
+            ...existingRecipes.getRecipe,
+            recipes: [
+              ...(existingRecipes.getRecipe?.recipes || []),
+              mutationResult.data.addRecipe.recipes[0],
+            ],
+          },
+        },
+      });
+    },
+  });
   const [requestUpdateRecipe, updateRecipeResult] = useMutation<
     UpdateRecipeData,
     MutationUpdateRecipeArgs
