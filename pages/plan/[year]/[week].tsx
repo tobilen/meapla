@@ -18,11 +18,10 @@ const CreatePlan: NextComponentType = () => {
   const week = parseParameter(router.query.week);
   if (!year || !week) throw new Error("Malformed Request");
 
-  const anchorDate = Temporal.ZonedDateTime.from({
+  const anchorDate = Temporal.PlainDate.from({
     year,
     month: 1,
     day: 1,
-    timeZone: "Etc/UTC",
   }).add({ weeks: week });
 
   const startOfWeek = anchorDate.subtract({ days: anchorDate.dayOfWeek - 1 });

@@ -11,11 +11,7 @@ export default {
 
 export const Default: Story = () => (
   <Weekplan
-    from={Temporal.PlainDateTime.from(
-      "2020-01-06T00:00:00.000Z"
-    ).toZonedDateTime("Etc/UTC")}
-    to={Temporal.PlainDateTime.from("2020-01-12T00:00:00.000Z").toZonedDateTime(
-      "Etc/UTC"
-    )}
+    from={Temporal.PlainDate.from("2020-01-06")}
+    to={Temporal.PlainDate.from("2020-01-12")}
   />
 );

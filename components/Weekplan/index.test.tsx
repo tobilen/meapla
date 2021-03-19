@@ -24,28 +24,18 @@ describe("Weekplan", () => {
   it("adds a plan", async () => {
     render(
       <Weekplan
-        from={Temporal.PlainDateTime.from(
-          "2020-01-06T00:00:00Z"
-        ).toZonedDateTime("Etc/UTC")}
-        to={Temporal.PlainDateTime.from("2020-01-12T00:00:00Z").toZonedDateTime(
-          "Etc/UTC"
-        )}
+        from={Temporal.PlainDate.from("2020-01-06")}
+        to={Temporal.PlainDate.from("2020-01-12")}
       />,
       wrapProviders({
         apollo: [
           mockGetRecipes(),
-          mockGetPlans(
-            { from: "2020-01-06T00:00:00Z", to: "2020-01-12T00:00:00Z" },
-            []
-          ),
-          mockDeletePlan(
-            { from: "2020-01-06T00:00:00Z", to: "2020-01-12T00:00:00Z" },
-            []
-          ),
+          mockGetPlans({ from: "2020-01-06", to: "2020-01-12" }, []),
+          mockDeletePlan({ from: "2020-01-06", to: "2020-01-12" }, []),
           mockAddPlan([
-            { id: 1, date: "2020-01-06T00:00:00Z", recipe: defaultRecipes[0] },
-            { id: 2, date: "2020-01-07T00:00:00Z", recipe: defaultRecipes[1] },
-            { id: 3, date: "2020-01-08T00:00:00Z", recipe: defaultRecipes[2] },
+            { id: 1, date: "2020-01-06", recipe: defaultRecipes[0] },
+            { id: 2, date: "2020-01-07", recipe: defaultRecipes[1] },
+            { id: 3, date: "2020-01-08", recipe: defaultRecipes[2] },
           ]),
         ],
         grommet: true,
@@ -71,20 +61,15 @@ describe("Weekplan", () => {
   it("shows already selected plans", async () => {
     render(
       <Weekplan
-        from={Temporal.PlainDateTime.from(
-          "2020-01-06T00:00:00Z"
-        ).toZonedDateTime("Etc/UTC")}
-        to={Temporal.PlainDateTime.from("2020-01-12T00:00:00Z").toZonedDateTime(
-          "Etc/UTC"
-        )}
+        from={Temporal.PlainDate.from("2020-01-06")}
+        to={Temporal.PlainDate.from("2020-01-12")}
       />,
       wrapProviders({
         apollo: [
           mockGetRecipes(),
-          mockGetPlans(
-            { from: "2020-01-06T00:00:00Z", to: "2020-01-12T00:00:00Z" },
-            [{ id: 1, date: "2020-01-06T00:00:00Z", recipe: defaultRecipes[3] }]
-          ),
+          mockGetPlans({ from: "2020-01-06", to: "2020-01-12" }, [
+            { id: 1, date: "2020-01-06", recipe: defaultRecipes[3] },
+          ]),
         ],
         grommet: true,
       })

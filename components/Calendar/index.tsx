@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { usePlan } from "../../hooks/usePlan";
 
 export type Props = {
-  refDate: Temporal.ZonedDateTime;
+  refDate: Temporal.PlainDate;
 };
 
 const getDayColor = ({
@@ -43,13 +43,13 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
   const brandColor = normalizeColor("brand", theme);
   const darkColor = normalizeColor("dark-1", theme);
 
-  const [reference, setReference] = React.useState<Temporal.ZonedDateTime>(
+  const [reference, setReference] = React.useState<Temporal.PlainDate>(
     referenceProp
   );
   const [
     selectedDay,
     setSelectedDay,
-  ] = React.useState<Temporal.PlainDateTime | null>(null);
+  ] = React.useState<Temporal.PlainDate | null>(null);
 
   React.useEffect(() => {
     setReference(referenceProp);
@@ -57,8 +57,8 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
 
   const { data, status, error } = usePlan({
     daterange: {
-      from: `${reference.subtract({ months: 1 }).toInstant()}`,
-      to: `${reference.add({ months: 2 }).toInstant()}`,
+      from: `${reference.subtract({ months: 1 })}`,
+      to: `${reference.add({ months: 2 })}`,
     },
   });
 
@@ -74,18 +74,16 @@ export const Calendar: React.FC<Props> = ({ refDate: referenceProp }) => {
       />
       <GrommetCalendar
         fill
-        reference={`${reference.toInstant()}`}
+        reference={`${reference}`}
         daysOfWeek
         firstDayOfWeek={1}
         onReference={(date) => {
-          const newReference = Temporal.PlainDateTime.from(
-            date
-          ).toZonedDateTime("Etc/UTC");
+          const newReference = Temporal.PlainDate.from(date);
           setReference(newReference.subtract({ days: newReference.day - 1 }));
         }}
       >
         {({ date, day }) => {
-          const currentDate = Temporal.PlainDateTime.from({
+          const currentDate = Temporal.PlainDate.from({
             day: date.getDate(),
             month: date.getMonth() + 1,
             year: date.getFullYear(),

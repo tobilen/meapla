@@ -7,8 +7,8 @@ import { Recipe } from "../../typings/graphql";
 import { usePlan } from "../../hooks/usePlan";
 
 export type Props = {
-  from: Temporal.ZonedDateTime;
-  to: Temporal.ZonedDateTime;
+  from: Temporal.PlainDate;
+  to: Temporal.PlainDate;
 };
 
 export const Weekplan: React.FC<Props> = ({ from, to }) => {
@@ -19,7 +19,7 @@ export const Weekplan: React.FC<Props> = ({ from, to }) => {
     addPlan: { mutate: addPlan, status: addPlanStatus },
     deletePlan: { mutate: deletePlan, status: deletePlanStatus },
   } = usePlan({
-    daterange: { from: `${from.toInstant()}`, to: `${to.toInstant()}` },
+    daterange: { from: `${from}`, to: `${to}` },
   });
   const [selectedRecipes, setSelectedRecipes] = React.useState<Recipe[]>([]);
 
@@ -37,11 +37,11 @@ export const Weekplan: React.FC<Props> = ({ from, to }) => {
 
   const handleWeekplanSave = React.useCallback(async () => {
     await deletePlan({
-      daterange: { from: `${from.toInstant()}`, to: `${to.toInstant()}` },
+      daterange: { from: `${from}`, to: `${to}` },
     });
     await addPlan(
       selectedRecipes.map((selectedRecipe, days) => ({
-        date: `${from.add({ days }).toInstant()}`,
+        date: `${from.add({ days })}`,
         recipeId: selectedRecipe.id,
       }))
     );
